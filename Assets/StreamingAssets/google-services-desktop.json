@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "526963708979",
+    "firebase_url": "https://eldrich-78666-default-rtdb.firebaseio.com",
+    "project_id": "eldrich-78666",
+    "storage_bucket": "eldrich-78666.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526963708979:android:29e01cd55a7b450c3abf46",
+        "android_client_info": {
+          "package_name": "com.default.eldrich"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM7x_xj28Ho10QLsHjFOm-alCuxL8on-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

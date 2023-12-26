@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b762228d98c974a99bcc853bb6a0eb, type: 3}
+  m_Name: Knife SO
+  m_EditorClassIdentifier: 
+  type: 1
+  _name: Knife
+  _description: Knife goes shiiiun
+  _sprite: {fileID: 21300000, guid: 0dc4f5c030acc0a4a91ceadc27719f50, type: 3}
+  _sprite_pouch: {fileID: 21300000, guid: eac0110a39a131c4db5deb4428297679, type: 3}
+  _sprite_pouch_used: {fileID: 21300000, guid: 6f0ce84c2089a9245933930c027b4050, type: 3}
+  _modelPrefab: {fileID: 3005735020196780283, guid: b6b6527c3afc1da4c8b7207bebd26e95, type: 3}
+  _usablePrefab: {fileID: 0}
+  _projectilePrefab: {fileID: 3798752353738450793, guid: fdeb95195f683c341a8ce8a922891af9, type: 3}
+  _discoverability: 5
+  _price: 160

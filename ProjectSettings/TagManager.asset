@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Damage
+  - Enemy
+  - Protection
+  - ButtonA
+  - Tcharacter
+  - playerHitArea
+  - enemyHitArea
+  - hitArea
+  - hitContactArea
+  - Hittable
+  - Terrain
+  - Body Part
+  - BodyPart
+  - Thrower
+  - Marker
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Player
+  - Water
+  - UI
+  - PP
+  - NoPush
+  - Visual
+  - Character
+  - HitArea
+  - Throwable
+  - UICamera
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
