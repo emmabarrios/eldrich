@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GeneralInventory : MonoBehaviour
@@ -51,6 +52,18 @@ public class GeneralInventory : MonoBehaviour
     public List<WeaponItem> GetWeaponItems() {
         return storedWeaponItemList;
     }
+
+
+    public List<string> GetQuickItemsAsStrings() {
+        List<string> quickItemStrings = storedQuickItemList.Select(q => q.ToString()).ToList();
+        return quickItemStrings;
+    }
+
+    public List<string> GetWeaponItemsAsStrings() {
+        List<string> weaponItemStrings = storedWeaponItemList.Select(w => w.ToString()).ToList();
+        return weaponItemStrings;
+    }
+
 
     public void RemoveItem(Item item) {
         if (item is QuickItem) {
@@ -160,5 +173,8 @@ public class GeneralInventory : MonoBehaviour
     public void SortItems() {
         SortItemList(storedQuickItemList);
         SortItemList(storedWeaponItemList);
+    }
+
+    public void GenerateItemsFromDatabase() { 
     }
 }

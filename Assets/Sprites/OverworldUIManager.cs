@@ -41,7 +41,7 @@ public class OverworldUIManager : MonoBehaviour
         // Update Stamina
         GameObject.Find("Stamina Stat Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.Stamina.ToString();
         // Update Damage
-        GameObject.Find("Damage Stat Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.Attack.ToString();
+        GameObject.Find("Damage Stat Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.Damage.ToString();
         // Update Defense
         GameObject.Find("Defense Stat Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.Defense.ToString();
 

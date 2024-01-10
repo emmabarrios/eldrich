@@ -7,12 +7,11 @@ public class ItemPanelToggle : MonoBehaviour
 {
     public static ItemPanelToggle instance;
 
-    [SerializeField] private GameObject buttonA = null;
-    [SerializeField] private GameObject buttonB = null;
     [SerializeField] private GameObject QuickItemPanel = null;
     private Toggle toggle;
 
     public Action<bool> OnToggleValueChanged;
+    private ShakeDetector shakeDetector;
 
     [Header("Sound FX Settings")]
     [SerializeField][Range(0f, 1f)] float volumeScale;
@@ -37,15 +36,12 @@ public class ItemPanelToggle : MonoBehaviour
 
         audioSource = this.GetComponent<AudioSource>();
 
+        shakeDetector = GameObject.Find("Shake Detector").GetComponent<ShakeDetector>();
+        shakeDetector.OnShake += OnShakeDetected;
     }
 
     void ToggleValueChanged(Toggle change) {
-        if (buttonA!=null) {
-            buttonA.SetActive(!change.isOn);
-        }
-        if (buttonB!=null) {
-            buttonB.SetActive(!change.isOn);
-        }
+
         OnToggleValueChanged?.Invoke(change.isOn);
         PlayRandomSoundFX();
     }
@@ -62,6 +58,12 @@ public class ItemPanelToggle : MonoBehaviour
         int randomValue = UnityEngine.Random.Range(0, potentialOpenSounds.Count);
         lastSoundPlayed = openSounds[randomValue];
         audioSource.PlayOneShot(openSounds[randomValue], volumeScale);
+    }
+
+    public void OnShakeDetected() {
+        toggle.isOn = !toggle.isOn;
+
+        ToggleValueChanged(toggle);
     }
 
 }

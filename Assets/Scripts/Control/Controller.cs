@@ -82,7 +82,7 @@ public class Controller : MonoBehaviour {
         quickItemToggle = GameObject.Find("Pouch Toggle").GetComponent<ItemPanelToggle>();
 
         // Input Event Subscribers
-        gestureInput.SwipeDirectionChanged += ProcessGestureSwipes;
+        gestureInput.SwipeDirectionChanged += HandleGestureInput;
         joystick.OnDoubleTap += Dash;
 
         // Initial Values
@@ -183,13 +183,7 @@ public class Controller : MonoBehaviour {
         }
     }
 
-    private void ProcessGestureSwipes(object sender, GestureInput.SwipeDirectionChangedEventArgs e) {
-        //if (!GameManager.instance.IsGameOnCombat() ) {
-        //    if (IsWalking == true) {
-        //        IsWalking = false;
-        //    }
-        //    return; 
-        //}
+    private void HandleGestureInput(object sender, GestureInput.SwipeDirectionChangedEventArgs e) {
 
         if (player.Stamina > 0 && !AttackPerformed && !IsUsingItem && !DashPerformed) {
 
@@ -237,6 +231,10 @@ public class Controller : MonoBehaviour {
         }
     }
 
+
+    private void HandleGyroscopeInput() {
+        // Gyroscope input logic goes here...
+    }
 
     private void Dash(object sender, Joystick.OnDoubleTapEventArgs e) {
 
@@ -305,7 +303,7 @@ public class Controller : MonoBehaviour {
         gestureInput = _gestureInput;
         joystick = _joystick;
 
-        gestureInput.SwipeDirectionChanged += ProcessGestureSwipes;
+        gestureInput.SwipeDirectionChanged += HandleGestureInput;
         joystick.OnDoubleTap += Dash;    
     }
 

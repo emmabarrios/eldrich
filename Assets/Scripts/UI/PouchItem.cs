@@ -15,7 +15,6 @@ public class PouchItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public Sprite item_holder_graphic;
     public Image fillImage = null;
 
-
     private enum ItemState { Ready, Holstered }
 
     private ItemState _state = ItemState.Holstered;
@@ -73,6 +72,7 @@ public class PouchItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         usablePrefab = itemSO._usablePrefab;
         projectilePrefab = itemSO._projectilePrefab;
         drawClip = itemSO._drawSound;
+
     }
 
     public void OnPointerDown(PointerEventData eventData) {
@@ -92,6 +92,7 @@ public class PouchItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
         if (_state == ItemState.Ready) {
             float swipeDistance = eventData.position.y - initialTouchPosition.y;
+
             if (Mathf.Abs(swipeDistance) > eventSwipeThreshold) {
                 DrawItem();
                 return;
@@ -239,4 +240,5 @@ public class PouchItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         this._row = r;
         this._column = c;
     }
+
 }

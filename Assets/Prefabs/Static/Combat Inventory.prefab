@@ -24,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6464295142459288583}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.6243271, y: 1.3774383, z: 0.69581014}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6464295142459288576
 MonoBehaviour:
@@ -44,14 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemList1:
-  - {fileID: 11400000, guid: 0b027529a44418f47a33a3727fb75a3f, type: 2}
-  - {fileID: 11400000, guid: 0b027529a44418f47a33a3727fb75a3f, type: 2}
-  - {fileID: 11400000, guid: 0b027529a44418f47a33a3727fb75a3f, type: 2}
-  - {fileID: 11400000, guid: fb5ab62e3862581459600ed8a83f1597, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   itemList2:
-  - {fileID: 11400000, guid: fb5ab62e3862581459600ed8a83f1597, type: 2}
-  - {fileID: 11400000, guid: fb5ab62e3862581459600ed8a83f1597, type: 2}
-  - {fileID: 11400000, guid: 6f645a6b3bead374da70801695482963, type: 2}
-  - {fileID: 11400000, guid: 6f645a6b3bead374da70801695482963, type: 2}
-  WeaponItemSO: {fileID: 11400000, guid: ffbf82e9ced467646a1f138655ba97ea, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  WeaponItemSO: {fileID: 0}
   weaponSlotManager: {fileID: 0}

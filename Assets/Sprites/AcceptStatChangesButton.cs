@@ -15,6 +15,9 @@ public class AcceptStatChangesButton : MonoBehaviour
         //PlayerStatsManager.instance.UpdateLastStats();
 
         overworldUIManager.UpdateStatsUIContent();
+
+        // Update database
+        DatabaseManager.instance.CreateOrUpdateUser();
     }
 
     private void Start() {

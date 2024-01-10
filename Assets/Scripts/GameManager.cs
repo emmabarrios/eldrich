@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
         }
 
         state = GameStates.Wait;
+
     }
 
     private void Update() {
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
                     isOnOverworldScene = true;
                     isOnCombatScene = false;
                     state = GameStates.LoadingWorldAssets;
+                    
                     //UpdateOverworldUI();
                 }
                 break;
@@ -239,14 +241,10 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = (int)limits;
         audioSource = GetComponent<AudioSource>();
-        //audioSource.PlayOneShot(battleAudio);
 
-        //Enemy enemy = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>();
+        //DatabaseManager.instance.LoadUserData();
+
     }
-
-    //public void InitializeCombatInventoryUI() {
-    //   GameObject.Find("Carousel").GetComponent<CombatUIcarousel>().InitializeUIcarousel(CombatInventory.instance.itemLists);
-    //}
 
     public void InitializePlayer() {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Controller>().LoadInputReferences();
@@ -362,5 +360,15 @@ public class GameManager : MonoBehaviour
 
     //private void UpdateOverworldUI() {
     //    GameObject.Find("Quick Item Card Container").GetComponent<QuickItemsCardGroup>().UpdateCardGroupContent(GeneralInventory.instance);
+    //}
+
+    //private IEnumerator LoadDatabaseData() {
+        
+    //    while (GameObject.Find("DatabaseManager") == null) {
+    //        yield return new WaitForSeconds(.5f);
+    //        Debug.Log("waiting...");
+    //    }
+    //    Debug.Log("found");
+    //    DatabaseManager.instance.LoadUserData();
     //}
 }
