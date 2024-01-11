@@ -8,5 +8,7 @@ public class User
     public List<string> quickItems;
     public int exp;
     public Stats stats;
-
+    public double totalTraveledDistance;
+    public int totalDaysLogged;
+    public string lastLoggedDay;
 }

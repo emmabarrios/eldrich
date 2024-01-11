@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     private bool isOnCombatScene = false;
     private bool isOnOverworldScene = false;
-    private bool combatSceneLoaded = false;
+    //private bool combatSceneLoaded = false;
 
     public enum GameStates {
         WaitingToStart,
@@ -218,6 +218,18 @@ public class GameManager : MonoBehaviour
         //Debug.Log(state);
     }
 
+    private void OnApplicationPause(bool pauseStatus) {
+        if (pauseStatus) {
+            // The application is paused
+            DatabaseManager.instance.SaveGame();
+        }
+    }
+
+    private void OnApplicationQuit() {
+        // The application is being closed
+        DatabaseManager.instance.SaveGame();
+    }
+
     public void EndCombatSequence(bool wasEnemyDefeated) {
         
         this.wasEnemyDefeated = wasEnemyDefeated;
@@ -242,7 +254,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = (int)limits;
         audioSource = GetComponent<AudioSource>();
 
-        //DatabaseManager.instance.LoadUserData();
+        DatabaseManager.instance.LoadUserData();
 
     }
 

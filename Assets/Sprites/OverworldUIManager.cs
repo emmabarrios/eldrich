@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Mapbox.Unity.Location;
 
 public class OverworldUIManager : MonoBehaviour
 {
@@ -33,6 +35,7 @@ public class OverworldUIManager : MonoBehaviour
     }
 
     public void UpdateStatsUIContent() {
+
         int availableSkillPoints = PlayerStatsManager.instance.SkillPoints;
         bool canIncrease = (availableSkillPoints > 0);
 
@@ -44,6 +47,13 @@ public class OverworldUIManager : MonoBehaviour
         GameObject.Find("Damage Stat Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.Damage.ToString();
         // Update Defense
         GameObject.Find("Defense Stat Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.Defense.ToString();
+
+        // Update next 100m card
+        int totalDistance = (int)GameObject.Find("Travel Distance Card").GetComponent<DeviceLocationProviderAndroidNative>().TotalTraveledDistance;
+        int nextPoint = 100 - totalDistance;
+
+        GameObject.Find("Travel Distance Card").transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = nextPoint.ToString();
+
 
         // Update experience balance
         GameObject.Find("Earned Exp Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.EarnedExperience.ToString();

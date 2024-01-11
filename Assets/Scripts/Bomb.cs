@@ -14,7 +14,7 @@ public class Bomb : Projectile
     [Header("Colliders In Range")]
     [SerializeField] private List<Collider> inRangeColliders = new List<Collider>();
 
-    private void Start() {
+    private new void Start() {
         base.Start();
         isTiming = true;
     }

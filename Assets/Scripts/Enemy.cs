@@ -40,7 +40,7 @@ public class Enemy : Character, IDamageable {
     
     [SerializeField] private bool isDefeated = false;
     //[SerializeField] private bool isHit = false;
-    [SerializeField] private bool attackPerformed = false;
+    //[SerializeField] private bool attackPerformed = false;
     [SerializeField] private bool isOnWalkingAnimation;
 
     public float attemptHitTime;

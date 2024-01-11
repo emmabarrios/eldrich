@@ -21,8 +21,8 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     [SerializeField] private float handleRange = 1;
     [SerializeField] private float deadZone = 0;
-    [SerializeField] private bool snapX = false;
-    [SerializeField] private bool snapY = false;
+    //[SerializeField] private bool snapX = false;
+    //[SerializeField] private bool snapY = false;
     [SerializeField] float lastTimeTap;
     [SerializeField] float tapThreshold = 0.75f;
     [SerializeField] private RectTransform background = null;

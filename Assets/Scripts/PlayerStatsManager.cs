@@ -20,7 +20,8 @@ public class PlayerStatsManager: MonoBehaviour
     [SerializeField] private float weaponAttack;
 
     [Header("Travel stats")]
-    [SerializeField] private float traveledDistance;
+    [SerializeField] private double traveledDistance;
+    [SerializeField] private double lastTraveledDistance;
     [SerializeField] private float maxDistance;
     [SerializeField] private float travelExp;
 
@@ -28,7 +29,6 @@ public class PlayerStatsManager: MonoBehaviour
     [SerializeField] private float earnedExp;
     [SerializeField] private float skillPointCost;
     [SerializeField] private int skillPoints;
-    //[SerializeField] private int percentageModifier;
 
 
     public int Vitality { get { return vitality; } set { vitality = value; } }
@@ -41,6 +41,8 @@ public class PlayerStatsManager: MonoBehaviour
     public int Stamina { get { return (int)stamina; } set { stamina = value; } }
     public int Damage { get { return (int)damage; } set { damage = value; } }
     public int Defense { get { return (int)defense; } set { defense = value; } }
+
+    private TimeTracker timeTracker;
 
     private void Awake() {
         if (instance == null) {
@@ -56,10 +58,6 @@ public class PlayerStatsManager: MonoBehaviour
         if (skillPointCost == 0) {
             skillPointCost = 5;
         }
-
-        // Show initial values
-        //UpdateExperience(0);
-        //UpdateLastStats();
     }
 
     public void LoadPlayerStats(Player character) {
@@ -88,10 +86,10 @@ public class PlayerStatsManager: MonoBehaviour
 
         earnedExp = user.exp;
 
+        traveledDistance = lastTraveledDistance;
+
         UpdateExperience(0);
         UpdateLastStats();
-
-        // cargar un archivo PlayerDataFile del "servidor" con los datos del jugador y actualizar los stats con eso
 
     }
 
@@ -102,10 +100,6 @@ public class PlayerStatsManager: MonoBehaviour
     //}
 
     public void UpdateLastStats() {
-        //_health = (int)(100f + Mathf.Ceil(vitality * 1.50f) + Mathf.Ceil(endurance * 1.1f));
-        //_stamina = (int)(100f + Mathf.Ceil(endurance * 1.50f) + Mathf.Ceil(vitality * 1.10f));
-        //_attack = (int)(10f + Mathf.Ceil(strenght * 1.50f) + weaponAttack);
-        //_defense = (int)(10f + Mathf.Ceil(strenght * 1.50f) + Mathf.Ceil(vitality * 1.10f) + Mathf.Ceil(endurance * 1.10f));
 
         Health = (int)(100f + Mathf.Ceil(vitality * 1.50f) + Mathf.Ceil(endurance * 1.1f));
         Stamina = (int)(100f + Mathf.Ceil(endurance * 1.50f) + Mathf.Ceil(vitality * 1.10f));

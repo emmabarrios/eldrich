@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c4694a0b939e5c46a3a12b79e5bfa64, type: 3}
+  m_Name: Battle 2
+  m_EditorClassIdentifier: 
+  _enemy: {fileID: 7865625984577985503, guid: ac8061cfdef51724cb97f9b45c9444cf, type: 3}
+  _markerObject: {fileID: 4697271925970358309, guid: 783e74ec3a5f5e24c832d11f908e7126, type: 3}
+  _itemList:
+  - {fileID: 11400000, guid: 0b027529a44418f47a33a3727fb75a3f, type: 2}
+  _weaponItemList:
+  - {fileID: 11400000, guid: afac265dd2ee96443b1502fd785deaca, type: 2}
+  _exp: 3

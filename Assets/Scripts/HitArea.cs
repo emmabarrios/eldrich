@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HitArea : MonoBehaviour
 {
-    [SerializeField] private Collider collider;
+    [SerializeField] private Collider _collider;
 
     private bool isTiming = false;
 
@@ -13,12 +13,12 @@ public class HitArea : MonoBehaviour
 
     [SerializeField] private float damage;
 
-    public event EventHandler OnHitDeflected;
+    //public event EventHandler OnHitDeflected;
 
 
     void Start()
     {
-        collider = GetComponent<Collider>();
+        _collider = GetComponent<Collider>();
         parentTarget = GetComponent<Transform>().root;
 
     }
@@ -28,7 +28,7 @@ public class HitArea : MonoBehaviour
         if (isTiming) {
             areaSpawnTime -= Time.deltaTime;
             if (areaSpawnTime < 0.1f) {
-                collider.enabled = false;
+                _collider.enabled = false;
                 isTiming = false;
                 areaSpawnTime = 0;
                 //areaType = AreaType.None;
@@ -41,12 +41,12 @@ public class HitArea : MonoBehaviour
         this.damage = damage;
         areaSpawnTime = window;
         isTiming = true;
-        collider.enabled = true;
+        _collider.enabled = true;
     }
 
     public void DeactivateHitArea() {
         isTiming = false;
-        collider.enabled = false;
+        _collider.enabled = false;
         areaSpawnTime = 0f;
     }
 

@@ -15,12 +15,12 @@ public class Controller : MonoBehaviour {
     private float lookRotationSpeed = 4f;
 
     [Header("Movement Settings")]
-    [SerializeField] private float movementSpeed = 5f;
+    //[SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float maxMovementSpeed = 10f;
     [SerializeField] private float accelerationTime = 2f;
     [SerializeField] private float deaccelerationTime = 2f;
     [SerializeField] private float speedLimitMultiplier = 1f;
-    [SerializeField] private float turnSpeed = 90f;
+    //[SerializeField] private float turnSpeed = 90f;
     [SerializeField] private bool isWalking;
 
     private float currentSpeed;
@@ -36,9 +36,8 @@ public class Controller : MonoBehaviour {
     [Header("Dash Settings")]
     [SerializeField] private float dashDistance;
     [SerializeField] private float dashMovementSpeed;
-    [SerializeField] private float dirMultiplier = 1f;
+    //[SerializeField] private float dirMultiplier = 1f;
     [SerializeField] private float lookRotationSpeedMultiplier = 4f;
-    [SerializeField] private float dashStaminaCost = 15f;
     [SerializeField] private bool dashPerformed = false;
 
     [Header("Input")]
@@ -51,7 +50,6 @@ public class Controller : MonoBehaviour {
     [SerializeField] private float attackTimer;
 
     [SerializeField] private bool attackPerformed = false;
-    [SerializeField] private bool canAttack = false;
     [SerializeField] private bool isUsingItem = false;
 
     // Events
@@ -122,7 +120,6 @@ public class Controller : MonoBehaviour {
             if (attackTimer < 0.1f) {
                 attackTimer = 0;
                 AttackPerformed = false;
-                //canAttack = true;
                 OnAttackCooldown?.Invoke(1f);
             }
         }

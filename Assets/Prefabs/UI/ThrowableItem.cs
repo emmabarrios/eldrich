@@ -10,7 +10,7 @@ public class ThrowableItem : MonoBehaviour, IUsable {
     public float timer;
     private bool isTiming;
 
-    [SerializeField] private float rotationForce = 5f; // The rotational force to apply
+    //[SerializeField] private float rotationForce = 5f;
 
     private void Start() {
         thrower = GameObject.Find("Item Thrower").GetComponent<Thrower>();

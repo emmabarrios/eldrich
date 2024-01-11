@@ -3,8 +3,8 @@ using Firebase.Database;
 using Firebase.Auth;
 using Firebase.Extensions;
 using UnityEngine;
-using System.Collections;
-using TMPro;
+using Mapbox.Unity.Location;
+using System;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -18,6 +18,12 @@ public class DatabaseManager : MonoBehaviour
     public PlayerStatsManager statsManager;
     public GeneralInventory inventory;
 
+    public DeviceLocationProviderAndroidNative locationProvider;
+
+    private double sessionTotalTraveledDistance;
+    public double SessionTotalTraveledDistance { get { return sessionTotalTraveledDistance; } set { sessionTotalTraveledDistance = value; } }
+
+    private User loadedUser;
 
     private void Awake() {
         if (instance == null) {
@@ -26,21 +32,9 @@ public class DatabaseManager : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
-
-        //user = AuthManager.instance.GetFirebaseUser();
-        //userId = AuthManager.instance.GetFirebaseUserId();
-        //dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-        //statsManager = PlayerStatsManager.instance;
-        //inventory = GeneralInventory.instance;
     }
 
     void Start() {
-        //if (instance == null) {
-        //    instance = this;
-        //    DontDestroyOnLoad(gameObject);
-        //} else {
-        //    Destroy(gameObject);
-        //}
 
         user = AuthManager.instance.GetFirebaseUser();
         userId = AuthManager.instance.GetFirebaseUserId();
@@ -50,14 +44,15 @@ public class DatabaseManager : MonoBehaviour
 
     public void CreateOrUpdateUser() {
 
-
-
         // Sample data for user creation
         User newUser = new User {
             userId = this.user.UserId,
             weaponItems = inventory.GetWeaponItemsAsStrings(),
             quickItems = inventory.GetQuickItemsAsStrings(),
             exp = statsManager.EarnedExperience,
+            totalTraveledDistance = loadedUser.totalTraveledDistance + SessionTotalTraveledDistance,
+            totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged + 1 : loadedUser.totalDaysLogged,
+            lastLoggedDay = DateTime.Today.ToString("yyyy-MM-dd"),
             stats = new Stats {
                 vitality = statsManager.Vitality,
                 endurance = statsManager.Endurance,
@@ -82,6 +77,7 @@ public class DatabaseManager : MonoBehaviour
 
     public void LoadUserData() {
         // Load references
+        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
         statsManager = PlayerStatsManager.instance;
         inventory = GeneralInventory.instance;
         userId = AuthManager.instance.GetFirebaseUserId();
@@ -100,18 +96,9 @@ public class DatabaseManager : MonoBehaviour
                     DataSnapshot snapshot = task.Result;
                     if (snapshot.Exists) {
                         string json = snapshot.GetRawJsonValue();
-                        User loadedUser = JsonUtility.FromJson<User>(json);
+                        loadedUser = JsonUtility.FromJson<User>(json);
 
                         AssignLoadedUserData(loadedUser);
-
-
-                        //foreach (var quickItem in loadedUser.quickItems) {
-                        //    Debug.Log("Quick Item: " + quickItem);
-                        //} 
-
-                        //foreach (var weaponItem in loadedUser.weaponItems) {
-                        //    Debug.Log("Quick Item: " + weaponItem);
-                        //}
 
                     } else {
                         Debug.LogWarning("User data not found for userId: " + userId);
@@ -121,6 +108,17 @@ public class DatabaseManager : MonoBehaviour
         } else {
             Debug.Log("user is empty");
         }
+    }
+
+    private bool IsCurrentDay(string dateString) {
+        // Convert the string to DateTime
+        if (DateTime.TryParse(dateString, out DateTime date)) {
+            // Compare with the current date
+            return date.Date == DateTime.Now.Date;
+        }
+
+        // Invalid date string
+        return false;
     }
 
     private void AssignLoadedUserData(User loadedUser) {
@@ -140,7 +138,9 @@ public class DatabaseManager : MonoBehaviour
         }
 
         PlayerStatsManager.instance.UpdateUserStatsAndAttritbutes(loadedUser);
+
     }
+
     public void SaveGame() {
         CreateOrUpdateUser();
     }

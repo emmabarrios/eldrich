@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BlockArea : MonoBehaviour
 {
-    [SerializeField] private Collider collider;
+    [SerializeField] private Collider _collider;
 
     private bool isTiming = false;
 
@@ -17,7 +17,7 @@ public class BlockArea : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        collider = GetComponent<Collider>();
+        _collider = GetComponent<Collider>();
         parentTarget = GetComponent<Transform>().root;
     }
 
@@ -27,7 +27,7 @@ public class BlockArea : MonoBehaviour
         if (isTiming) {
             areaSpawnTime -= Time.deltaTime;
             if (areaSpawnTime < 0.1f) {
-                collider.enabled = false;
+                _collider.enabled = false;
                 isTiming = false;
             }
         }
@@ -37,7 +37,7 @@ public class BlockArea : MonoBehaviour
         this.damage = damage;
         areaSpawnTime = window;
         isTiming = true;
-        collider.enabled = true;
+        _collider.enabled = true;
     }
 
 

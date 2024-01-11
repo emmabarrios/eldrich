@@ -39,7 +39,7 @@ public class Player : Character, IDamageable
     public float MaxStamina { get { return maxStamina; } set { maxStamina = value; } }
     public float AttackCooldown { get { return attackCooldown; } set { attackCooldown = value; } }
 
-    [SerializeField] private bool isBlocking = false;
+    //[SerializeField] private bool isBlocking = false;
 
     public Action OnDamageTaken;
     public Action OnHitBlocked;
@@ -47,9 +47,9 @@ public class Player : Character, IDamageable
     public Action<float> OnHealthValueReduced;
 
     [SerializeField] private CharacterSoundFXManager characterSoundFXManager;
-    [SerializeField] PlayerStatsManager characterStats = null;
+    //[SerializeField] PlayerStatsManager characterStats = null;
 
-    public event EventHandler<OnWeaponHitDetectedEventArgs> OnWeaponHitDetected;
+    //public event EventHandler<OnWeaponHitDetectedEventArgs> OnWeaponHitDetected;
     public event EventHandler<OnStaminaValueChanged_EventArgs> OnStaminaValueChanged;
     public class OnHealthValueChanged_EventArgs {
         public float value;

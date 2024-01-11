@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Orbitate : MonoBehaviour
 {
-    [SerializeField] private float movementSpeed = 5f;
+    //[SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float maxMovementSpeed = 10f;
     [SerializeField] private float accelerationTime = 2f;
     [SerializeField] private float rotationSpeed = 90f;

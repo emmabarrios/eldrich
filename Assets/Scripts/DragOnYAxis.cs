@@ -14,7 +14,7 @@ public class DragOnYAxis : MonoBehaviour, IPointerDownHandler, IDragHandler {
     private Camera cam;
 
     // Flag to indicate if dragging is allowed
-    private bool isDragging = false;
+    //private bool isDragging = false;
 
     public bool isActive = false;
 

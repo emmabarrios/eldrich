@@ -7,10 +7,10 @@
 	using System.IO;
 	using System.Text;
 	using Mapbox.Utils;
+    using System.Collections.Generic;
 
-	public class DeviceLocationProviderAndroidNative : AbstractLocationProvider, IDisposable
+    public class DeviceLocationProviderAndroidNative : AbstractLocationProvider, IDisposable
 	{
-
 
 		/// <summary>
 		/// The minimum distance (measured in meters) a device must move laterally before location is updated. 
@@ -43,6 +43,13 @@
 		private AndroidJavaObject _gpsInstance;
 		private AndroidJavaObject _sensorInstance;
 
+		private List<Vector2d> locationHistory = new List<Vector2d>();
+		private double totalTraveledDistance = 0.0;
+		private float distanceEarnedExp = 0f;
+
+
+
+		public double TotalTraveledDistance { get { return TotalTraveledDistance; } }
 
 		~DeviceLocationProviderAndroidNative() { Dispose(false); }
 		public void Dispose()
@@ -317,6 +324,25 @@
 				_currentLocation.UserHeading = newHeading;
 			}
 
+			// Add the current location to the history
+			locationHistory.Add(_currentLocation.LatitudeLongitude);
+
+			// Calculate distance traveled if there are enough points in the history
+			if (locationHistory.Count > 1) {
+				double distance = CalculateDistance(locationHistory[locationHistory.Count - 2], _currentLocation.LatitudeLongitude);
+				totalTraveledDistance += distance;
+
+				// Check if the total traveled distance is greater than or equal to 100 meters
+				if (totalTraveledDistance >= 100f) {
+					distanceEarnedExp = 30f;
+					DatabaseManager.instance.SessionTotalTraveledDistance += totalTraveledDistance;
+					totalTraveledDistance = 0;
+				}
+
+				// Update player exp 
+				PlayerStatsManager.instance.UpdateExperience(distanceEarnedExp);
+			}
+
 			float? newSpeed = location.Call<float>("getSpeed");
 			bool speedUpdated = newSpeed != _currentLocation.SpeedMetersPerSecond;
 			_currentLocation.SpeedMetersPerSecond = newSpeed;
@@ -348,6 +374,19 @@
 
 		}
 
+		private double CalculateDistance(Vector2d from, Vector2d to) {
+			const double EarthRadius = 6371000; // in meters
+			double dLat = (to.x - from.x) * (Math.PI / 180.0);
+			double dLon = (to.y - from.y) * (Math.PI / 180.0);
+			double lat1 = from.x * (Math.PI / 180.0);
+			double lat2 = to.x * (Math.PI / 180.0);
+
+			double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+					   Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
+			double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+			return EarthRadius * c;
+		}
 
 		/// <summary>
 		/// If GPS and network location are available use the newer/better one

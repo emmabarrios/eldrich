@@ -7,7 +7,7 @@ public class ItemPanelToggle : MonoBehaviour
 {
     public static ItemPanelToggle instance;
 
-    [SerializeField] private GameObject QuickItemPanel = null;
+    //[SerializeField] private GameObject QuickItemPanel = null;
     private Toggle toggle;
 
     public Action<bool> OnToggleValueChanged;

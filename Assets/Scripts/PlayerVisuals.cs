@@ -6,8 +6,8 @@ using UnityEngine;
 public class PlayerVisuals : MonoBehaviour
 {
     [Header("Weapon Anchors")]
-    [SerializeField] private Transform anchorPointL = null;
-    [SerializeField] private Transform anchorPointR = null;
+    //[SerializeField] private Transform anchorPointL = null;
+    //[SerializeField] private Transform anchorPointR = null;
 
     [SerializeField] private PlayerPrecense animator;
 
@@ -24,9 +24,9 @@ public class PlayerVisuals : MonoBehaviour
 
 
         //anchorPointL = GameObject.Find("Player Weapon Anchor Point R").GetComponent<Transform>();
-        anchorPointL = null;
+        //anchorPointL = null;
         //anchorPointR = GameObject.Find("Player Weapon Anchor Point R").GetComponent<Transform>();
-        anchorPointR = null;
+        //anchorPointR = null;
     }
 
     private void Update() {
