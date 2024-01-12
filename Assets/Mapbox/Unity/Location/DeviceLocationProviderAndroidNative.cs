@@ -11,13 +11,13 @@
 
     public class DeviceLocationProviderAndroidNative : AbstractLocationProvider, IDisposable
 	{
-		//public Action<double> OnDistanceChange;
+        
 
-		/// <summary>
-		/// The minimum distance (measured in meters) a device must move laterally before location is updated. 
-		/// https://developer.android.com/reference/android/location/LocationManager.html#requestLocationUpdates(java.lang.String,%20long,%20float,%20android.location.LocationListener)
-		/// </summary>
-		[SerializeField]
+        /// <summary>
+        /// The minimum distance (measured in meters) a device must move laterally before location is updated. 
+        /// https://developer.android.com/reference/android/location/LocationManager.html#requestLocationUpdates(java.lang.String,%20long,%20float,%20android.location.LocationListener)
+        /// </summary>
+        [SerializeField]
 		[Tooltip("The minimum distance (measured in meters) a device must move laterally before location is updated. Higher values like 500 imply less overhead.")]
 		float _updateDistanceInMeters = 0.0f;
 
@@ -46,9 +46,9 @@
 
 		private List<Vector2d> locationHistory = new List<Vector2d>();
 		public double totalTraveledDistance = 0.0;
-		private float distanceEarnedExp = 0f;
+		//private float distanceEarnedExp = 0f;
 
-
+		public Action<double> OnDistanceChange;
 
 		//public double TotalTraveledDistance { get { return TotalTraveledDistance; } }
 
@@ -334,17 +334,8 @@
 				double distance = CalculateDistance(locationHistory[locationHistory.Count - 2], _currentLocation.LatitudeLongitude);
 				totalTraveledDistance += distance;
 
-				//OnDistanceChange?.Invoke(totalTraveledDistance);
+				OnDistanceChange?.Invoke(totalTraveledDistance);
 
-				// Check if the total traveled distance is greater than or equal to 100 meters
-				//if (totalTraveledDistance >= 100f) {
-				//	distanceEarnedExp = 30f;
-				//	DatabaseManager.instance.SessionTotalTraveledDistance += totalTraveledDistance;
-				//	totalTraveledDistance = 0;
-				//}
-
-				// Update player exp 
-				//PlayerStatsManager.instance.UpdateExperience(distanceEarnedExp);
 			}
 
 			float? newSpeed = location.Call<float>("getSpeed");
@@ -378,18 +369,25 @@
 
 		}
 
+		//private double CalculateDistance(Vector2d from, Vector2d to) {
+		//	const double EarthRadius = 6371000; // in meters
+		//	double dLat = (to.x - from.x) * (Math.PI / 180.0);
+		//	double dLon = (to.y - from.y) * (Math.PI / 180.0);
+		//	double lat1 = from.x * (Math.PI / 180.0);
+		//	double lat2 = to.x * (Math.PI / 180.0);
+
+		//	double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+		//			   Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
+		//	double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+		//	return EarthRadius * c;
+		//}
+
 		private double CalculateDistance(Vector2d from, Vector2d to) {
-			const double EarthRadius = 6371000; // in meters
-			double dLat = (to.x - from.x) * (Math.PI / 180.0);
-			double dLon = (to.y - from.y) * (Math.PI / 180.0);
-			double lat1 = from.x * (Math.PI / 180.0);
-			double lat2 = to.x * (Math.PI / 180.0);
+			Vector3 fromVector = new Vector3((float)from.x, 0f, (float)from.y);
+			Vector3 toVector = new Vector3((float)to.x, 0f, (float)to.y);
 
-			double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-					   Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
-			double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-
-			return EarthRadius * c;
+			return Vector3.Distance(fromVector, toVector);
 		}
 
 		/// <summary>

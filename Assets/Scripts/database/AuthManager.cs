@@ -20,7 +20,7 @@ public class AuthManager : MonoBehaviour {
     public TMP_InputField emailLoginField;
     public TMP_InputField passwordLoginField;
     public TMP_Text warningLoginText;
-    //public TMP_Text confirmLoginText;
+    public TMP_Text confirmLoginText;
 
     //Register variables
     [Header("Register")]
@@ -109,8 +109,7 @@ public class AuthManager : MonoBehaviour {
 
             // Load overworld scene
             Loader.Load(Loader.Scene.Overworld);
-
-            //confirmLoginText.text = "Logged In";
+            confirmLoginText.text = "Logged In";
         }
     }
 

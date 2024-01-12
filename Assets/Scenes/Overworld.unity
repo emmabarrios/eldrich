@@ -549,6 +549,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2070741726}
+        m_TargetAssemblyTypeName: QuickItemSlotsContainer, Assembly-CSharp
+        m_MethodName: ResetSlotsClickedState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &65396106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2630,7 +2642,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134124955351839118, guid: 26c5f19ee705e084697ed711fc27d2ff, type: 3}
       propertyPath: storedWeaponItemList.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4134124955351839118, guid: 26c5f19ee705e084697ed711fc27d2ff, type: 3}
       propertyPath: storedQuickItemList.Array.data[0]
@@ -3110,7 +3122,6 @@ GameObject:
   - component: {fileID: 431152521}
   - component: {fileID: 431152520}
   - component: {fileID: 431152519}
-  - component: {fileID: 431152522}
   m_Layer: 5
   m_Name: Exit Player Menu Button
   m_TagString: Untagged
@@ -3245,18 +3256,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431152517}
   m_CullTransparentMesh: 1
---- !u!114 &431152522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 431152517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 421e6f95121b6a6419040e6b01aa7335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &432056433
 GameObject:
   m_ObjectHideFlags: 0
@@ -3461,6 +3460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c76f146e1936634c84e12abb54715ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scriptableObjects: []
 --- !u!4 &476530928
 Transform:
   m_ObjectHideFlags: 0
@@ -3746,18 +3746,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2070741723}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 0
@@ -6549,98 +6537,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &973617348
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 973617351}
-  - component: {fileID: 973617350}
-  - component: {fileID: 973617349}
-  m_Layer: 0
-  m_Name: Terrain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
---- !u!154 &973617349
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973617348}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: 012dbcb9fa979004a973adceb215a02b, type: 2}
-  m_EnableTreeColliders: 1
---- !u!218 &973617350
-Terrain:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973617348}
-  m_Enabled: 1
-  serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: 012dbcb9fa979004a973adceb215a02b, type: 2}
-  m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
-  m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 80
-  m_DetailObjectDensity: 1
-  m_HeightmapPixelError: 5
-  m_SplatMapDistance: 1000
-  m_HeightmapMaximumLOD: 0
-  m_ShadowCastingMode: 2
-  m_DrawHeightmap: 1
-  m_DrawInstanced: 0
-  m_DrawTreesAndFoliage: 1
-  m_StaticShadowCaster: 0
-  m_IgnoreQualitySettings: 0
-  m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: bb0c0ab46064b7c4786a2bf600b2405e, type: 2}
-  m_BakeLightProbesForTrees: 1
-  m_PreserveTreePrototypeLayers: 0
-  m_DeringLightProbesForTrees: 1
-  m_ReceiveGI: 1
-  m_ScaleInLightmap: 0.0256
-  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
-  m_GroupingID: 0
-  m_RenderingLayerMask: 1
-  m_AllowAutoConnect: 1
-  m_EnableHeightmapRayTracing: 1
-  m_EnableTreesAndDetailsRayTracing: 0
-  m_TreeMotionVectorModeOverride: 3
---- !u!4 &973617351
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973617348}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25, y: 0, z: -25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &996675365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7463,7 +7359,6 @@ GameObject:
   - component: {fileID: 1150211006}
   - component: {fileID: 1150211005}
   - component: {fileID: 1150211004}
-  - component: {fileID: 1150211003}
   m_Layer: 5
   m_Name: Exit Options Button
   m_TagString: Untagged
@@ -7492,18 +7387,6 @@ RectTransform:
   m_AnchoredPosition: {x: 287, y: -911}
   m_SizeDelta: {x: 175, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1150211003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150211001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 421e6f95121b6a6419040e6b01aa7335, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1150211004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11278,7 +11161,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'Distance: 0.0 meters'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11287,8 +11170,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11311,7 +11194,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -11362,7 +11245,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906122397}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2366d3a0b9f83a0459dd463d9aff8fbb, type: 3}
   m_Name: 
@@ -11602,18 +11485,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2070741726}
         m_TargetAssemblyTypeName: QuickItemSlotsContainer, Assembly-CSharp
         m_MethodName: ResetSlotsClickedState
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2070741726}
-        m_TargetAssemblyTypeName: QuickItemSlotsContainer, Assembly-CSharp
-        m_MethodName: ResetQuickItemSlotsContainer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11869,7 +11740,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6298385688827792003, guid: 5bd27bfeea5f33042a39cbdab06dd345, type: 3}
       propertyPath: _updateDistanceInMeters
-      value: 0.1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6298385688827792003, guid: 5bd27bfeea5f33042a39cbdab06dd345, type: 3}
+      propertyPath: _updateTimeInMilliSeconds
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 8258183772397072586, guid: 5bd27bfeea5f33042a39cbdab06dd345, type: 3}
       propertyPath: m_IsActive
@@ -14387,7 +14262,6 @@ SceneRoots:
   - {fileID: 107878428}
   - {fileID: 1671680602}
   - {fileID: 6151589627016841141}
-  - {fileID: 973617351}
   - {fileID: 581338348695171095}
   - {fileID: 852627767}
   - {fileID: 5973278760257932355}

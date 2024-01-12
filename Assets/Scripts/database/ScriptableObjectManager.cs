@@ -22,7 +22,7 @@ public class ScriptableObjectManager : MonoBehaviour {
     }
 
     private void InitializeDictionary() {
-        scriptableObjects = Resources.LoadAll<Item>("ScriptableObjects");
+        scriptableObjects = Resources.LoadAll<Item>("ScriptableObjects/Items");
 
         foreach (Item so in scriptableObjects) {
             // Add each Scriptable Object to the dictionary using its name
@@ -32,10 +32,12 @@ public class ScriptableObjectManager : MonoBehaviour {
 
     // Retrieve a Scriptable Object by name
     public Item GetScriptableObject(string name) {
-        if (scriptableObjectsDictionary.TryGetValue(name, out Item so)) {
-            return so;
+        if (name!="") {
+            if (scriptableObjectsDictionary.TryGetValue(name, out Item so)) {
+                return so;
+            }
         }
-
+        
         Debug.LogWarning($"Scriptable Object with name '{name}' not found.");
         return null;
     }

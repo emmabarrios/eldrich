@@ -51,7 +51,7 @@ public class DatabaseManager : MonoBehaviour
             weaponItems = inventory.GetWeaponItemsAsStrings(),
             quickItems = inventory.GetQuickItemsAsStrings(),
             exp = statsManager.EarnedExperience,
-            totalTraveledDistance = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>().totalTraveledDistance,
+            totalTraveledDistance = loadedUser.totalTraveledDistance + TraveledDistanceTracker.instance.CurrentTraveledDistance,
             totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,
             lastLoggedDay = DateTime.Today.ToString("yyyy-MM-dd"),
             stats = new Stats {
@@ -97,9 +97,13 @@ public class DatabaseManager : MonoBehaviour
                     DataSnapshot snapshot = task.Result;
                     if (snapshot.Exists) {
                         string json = snapshot.GetRawJsonValue();
-                        this.loadedUser = JsonUtility.FromJson<User>(json);
+                        User temUser = new User();
+                        
+                        temUser = JsonUtility.FromJson<User>(json);
 
-                        AssignLoadedUserData(this.loadedUser);
+                        this.loadedUser = temUser;
+
+                        AssignLoadedUserData(temUser);
 
                     } else {
                         Debug.LogWarning("User data not found for userId: " + userId);
@@ -110,7 +114,7 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("user is empty");
         }
 
-        Debug.Log(loadedUser.lastLoggedDay);
+        //Debug.Log(loadedUser.lastLoggedDay);
 
     }
 
@@ -119,13 +123,13 @@ public class DatabaseManager : MonoBehaviour
     }
 
     private void AssignLoadedUserData(User loadedUser) {
-        foreach (var weaponItem in loadedUser.weaponItems) {
-            if (weaponItem != null) {
-                //Debug.Log("Weapon Item: " + weaponItem);
-                GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
-            }
+        //foreach (var weaponItem in loadedUser.weaponItems) {
+        //    if (weaponItem != null || weaponItem != "") {
+        //        Debug.Log("Weapon Item: " + weaponItem);
+        //        GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
+        //    }
 
-        }
+        //}
 
         foreach (var quickItem in loadedUser.quickItems) {
             if (quickItem != null || quickItem!="") {

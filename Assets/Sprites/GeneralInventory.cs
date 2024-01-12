@@ -38,12 +38,6 @@ public class GeneralInventory : MonoBehaviour
 
         SortItemList(storedQuickItemList);
 
-
-        //BubbleSortByName(storedQuickItemList);
-        // Convert List<QuickItem> to List<Item>
-        //List<Item> quickItemList = storedQuickItemList.ConvertAll(item => (Item)item);
-        //BubbleSortByName(quickItemList);
-        //storedQuickItemList = quickItemList.ConvertAll(item => (QuickItem)item);
     }
 
     public List<QuickItem> GetQuickItems() {
@@ -53,15 +47,21 @@ public class GeneralInventory : MonoBehaviour
         return storedWeaponItemList;
     }
 
-
+    // AÑADIR ITEMS DEL COMBAT INVENTORY A AMBOS METODOS
     public List<string> GetQuickItemsAsStrings() {
         List<string> quickItemStrings = storedQuickItemList.Select(q => q.ToString()).ToList();
-        return quickItemStrings;
+        if (quickItemStrings != null) {
+            return quickItemStrings;
+        } 
+        return null;
     }
 
     public List<string> GetWeaponItemsAsStrings() {
         List<string> weaponItemStrings = storedWeaponItemList.Select(w => w.ToString()).ToList();
-        return weaponItemStrings;
+        if (weaponItemStrings!=null) {
+            return weaponItemStrings;
+        }
+        return null;
     }
 
 
@@ -175,6 +175,4 @@ public class GeneralInventory : MonoBehaviour
         SortItemList(storedWeaponItemList);
     }
 
-    public void GenerateItemsFromDatabase() { 
-    }
 }
