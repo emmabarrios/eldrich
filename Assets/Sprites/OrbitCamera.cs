@@ -7,8 +7,8 @@ public class OrbitCamera : MonoBehaviour
     public Transform target;
     public float rotationSpeed = 5f;
     public float zoomSpeed = 5f;
-    public float minDistance = 2f;  // Set your desired minimum distance from the target
-    public float maxDistance = 10f; // Set your desired maximum distance from the target
+    public float minDistance = 2f;  
+    public float maxDistance = 10f; 
 
     void Update() {
         // Ensure that there is a target assigned
@@ -34,6 +34,8 @@ public class OrbitCamera : MonoBehaviour
 
             // Set the new position of the camera
             transform.position = target.position - transform.forward * newDistance;
+
         }
     }
+
 }
