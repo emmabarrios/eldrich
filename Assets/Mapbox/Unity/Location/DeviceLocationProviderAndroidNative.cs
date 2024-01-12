@@ -11,6 +11,7 @@
 
     public class DeviceLocationProviderAndroidNative : AbstractLocationProvider, IDisposable
 	{
+		public Action<double> OnDistanceChange;
 
 		/// <summary>
 		/// The minimum distance (measured in meters) a device must move laterally before location is updated. 
@@ -44,12 +45,12 @@
 		private AndroidJavaObject _sensorInstance;
 
 		private List<Vector2d> locationHistory = new List<Vector2d>();
-		private double totalTraveledDistance = 0.0;
+		public double totalTraveledDistance = 0.0;
 		private float distanceEarnedExp = 0f;
 
 
 
-		public double TotalTraveledDistance { get { return TotalTraveledDistance; } }
+		//public double TotalTraveledDistance { get { return TotalTraveledDistance; } }
 
 		~DeviceLocationProviderAndroidNative() { Dispose(false); }
 		public void Dispose()
@@ -332,15 +333,17 @@
 				double distance = CalculateDistance(locationHistory[locationHistory.Count - 2], _currentLocation.LatitudeLongitude);
 				totalTraveledDistance += distance;
 
+				OnDistanceChange?.Invoke(totalTraveledDistance);
+
 				// Check if the total traveled distance is greater than or equal to 100 meters
-				if (totalTraveledDistance >= 100f) {
-					distanceEarnedExp = 30f;
-					DatabaseManager.instance.SessionTotalTraveledDistance += totalTraveledDistance;
-					totalTraveledDistance = 0;
-				}
+				//if (totalTraveledDistance >= 100f) {
+				//	distanceEarnedExp = 30f;
+				//	DatabaseManager.instance.SessionTotalTraveledDistance += totalTraveledDistance;
+				//	totalTraveledDistance = 0;
+				//}
 
 				// Update player exp 
-				PlayerStatsManager.instance.UpdateExperience(distanceEarnedExp);
+				//PlayerStatsManager.instance.UpdateExperience(distanceEarnedExp);
 			}
 
 			float? newSpeed = location.Call<float>("getSpeed");

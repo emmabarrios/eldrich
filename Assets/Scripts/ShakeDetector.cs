@@ -20,8 +20,6 @@ public class ShakeDetector : MonoBehaviour {
             if (accelerationMagnitude > shakeThreshold) {
                 Debug.Log("Device shaken!");
                 OnShake?.Invoke();
-                // Add your logic here for handling the shake event
-                // For example, trigger an action or function
             }
         } else {
             Debug.LogError("Accelerometer is not supported on this device.");

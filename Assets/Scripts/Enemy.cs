@@ -6,41 +6,18 @@ using UnityEngine.UI;
 
 public class Enemy : Character, IDamageable {
 
-    //public Transform camPole;
-    //public Transform camTarget;
-    //public float yOffset;
-
     [SerializeField] private float currentHealth;
     [SerializeField] float maxHealth;
-    //private Animator animator;
 
     [SerializeField] Animator visualAnimator;
 
-    
-
-    //[SerializeField] private float timer;
-    //[SerializeField] private float limitedTime = 5f;
-    //[SerializeField] private bool isTiming;
-    //[SerializeField] private float attackWindow;
-
-    //private Weapon enemyWeapon;
-    //public Weapon EnemyWeapon { get { return enemyWeapon; } set { enemyWeapon = value; } }
-
     [SerializeField] private Image lifebarImage = null;
-    //[SerializeField] private Text text = null;
-    //[SerializeField] private string enemyName = null;
-
-    //private Transform playerTransform;
-    //[SerializeField] float rotationSpeed;
     [SerializeField] float walkSpeed;
-    //[SerializeField] float attackStateTime;
 
     CharacterController controller;
 
     
     [SerializeField] private bool isDefeated = false;
-    //[SerializeField] private bool isHit = false;
-    //[SerializeField] private bool attackPerformed = false;
     [SerializeField] private bool isOnWalkingAnimation;
 
     public float attemptHitTime;
@@ -50,8 +27,6 @@ public class Enemy : Character, IDamageable {
 
     public float attackTimer;
     public float attackTime = 1;
-
-    //public float actionDelay = 1f;
 
     [SerializeField] private CharacterSoundFXManager characterSoundFXManager;
 
@@ -108,114 +83,6 @@ public class Enemy : Character, IDamageable {
     [Header("State settings")]
     public EnemyState currentState = EnemyState.Idle;
 
-    //private void Awake() {
-    //    // Target lock the enemy on the player
-    //    player = GameObject.Find("Player");
-    //    player.GetComponent<Controller>().SetLockTarget(this.transform);
-
-    //    playerTransform = player.GetComponent<Transform>();
-    //}
-
-    //// Start is called before the first frame update
-    //void Start() {
-    //    controller = GetComponent<CharacterController>();
-    //    //playerTransform = GameObject.Find("Player").GetComponent<Transform>();
-    //    visualAnimator = GetComponent<Animator>();
-    //    //isTiming = true;
-    //    //text.text = enemyName;
-    //    currentHealth = Health;
-    //    maxHealth = Health;
-    //    //characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
-    //    attackTimer = attackTime;
-    //}
-
-    //private void Update() {
-
-    //    if (Health <= 0) {
-    //        if (!isDefeated) {
-    //            isDefeated = true;
-    //            GameManager.instance.EndCombatSequence(isDefeated);
-    //        }
-    //    }
-
-    //    RotateToTarget(rotationSpeed, Time.deltaTime);
-    //}
-
-    //// Update is called once per frame
-    //void FixedUpdate() {
-    //    if (attackPerformed == false) {
-    //        Color rayColor = Color.blue;
-    //        Vector3 rayStart = transform.position + transform.forward * raycastOffset + new Vector3(0f, yOffset, 0f);
-
-    //        // Perform the raycast
-    //        RaycastHit hit;
-
-    //        if (Physics.Raycast(rayStart, transform.forward, out hit, raycastDistance, targetLayer)) {
-    //            Debug.Log(hit.collider);
-    //            Player player = hit.collider.GetComponent<Player>();
-    //            if (player != null && player.Health > 0) {
-    //                //AttackPlayer();
-    //                //StartCoroutine(ShootAttackRayDelayed(attackDelay));
-    //                //visualAnimator.Play("attack", -1, 0);
-    //                attackPerformed = true;
-    //            }
-    //        }
-    //        Debug.DrawRay(rayStart, transform.forward * raycastDistance, rayColor);
-    //    }
-    //}
-
-    //public void TakeDamage(float damage) {
-    //    //animator.Play("Skeleton@Damage01");
-    //    //characterSoundFXManager.PlayeDamageSoundFX();
-    //    Health -= damage;
-    //    lifebarImage.fillAmount = Health / maxHealth;
-    //    OnDamageTaken?.Invoke(Health);
-
-    //    if (Health<=0) {
-    //        visualAnimator.Play("dead", -1, 0);
-    //    } else {
-    //        visualAnimator.Play("hit", -1, 0);
-    //    }
-    //}
-
-    //private void RotateToTarget(float followRotationSpeed, float timeDelta) {
-    //    if (attackPerformed==false) {
-    //        Vector3 directionToTarget = playerTransform.position - transform.position;
-    //        directionToTarget.y = 0f;
-    //        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-    //        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, timeDelta * followRotationSpeed);
-    //    }
-
-    //    if (isAnimationWalking) {
-    //        Vector3 moveDirection = transform.forward;
-    //        controller.Move(moveDirection * walkSpeed * Time.deltaTime);
-    //    }
-    //}
-
-    ////private IEnumerator Recover(float time) {
-    ////    yield return new WaitForSeconds(time);
-    ////    isWalking = true;
-    ////    isTiming = true;
-    ////}
-
-    //private IEnumerator ShootAttackRayDelayed(float time) {
-    //    //isWalking = false;
-    //    yield return new WaitForSeconds(time);
-
-    //}
-
-    //private void AttackPlayer() {
-    //    Color rayColor = Color.red;
-    //    Vector3 rayStart = transform.position + transform.forward * raycastOffset + new Vector3(0f, yOffset, 0f);
-    //    RaycastHit hit;
-    //    if (Physics.Raycast(rayStart, transform.forward, out hit, raycastDistance, targetLayer)) {
-    //        Player player = hit.collider.GetComponent<Player>();
-    //        if (player != null) {
-    //            player.TakeDamage(Attack);
-    //        }
-    //    }
-    //    Debug.DrawRay(rayStart, transform.forward * raycastDistance, rayColor);
-    //}
 
     private void Awake() {
         // Target lock the enemy on the player
@@ -230,12 +97,7 @@ public class Enemy : Character, IDamageable {
         characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
         currentHealth = Health;
         maxHealth = Health;
-        //characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
     }
-
-
-   
-
 
     void Update() {
 
@@ -342,11 +204,6 @@ public class Enemy : Character, IDamageable {
             TranslateTowardsTarget();
         }
         
-        // ?? I think this is why of the moonwalking
-        //if (!IsPlayerInFront()) {
-        //    isWalking = true;
-        //}
-
         if(IsPlayerInFront() && hasAttackStarted == false) {
             currentState = EnemyState.Attack;
         }
@@ -418,67 +275,6 @@ public class Enemy : Character, IDamageable {
         isWalking = true;
     }
 
-    //IEnumerator AttackCoroutine() {
-    //    visualAnimator.Play("attack", -1, 0);
-
-    //    if (attackInterrupted) {
-    //        hasAttackStarted = false;
-    //        hasAttacked = false;
-    //        attackInterrupted = false;
-    //        yield break;
-    //    }
-
-    //    yield return new WaitForSeconds(attackDelay);
-
-    //    if (attackInterrupted) {
-    //        hasAttackStarted = false;
-    //        hasAttacked = false;
-    //        attackInterrupted = false;
-    //        yield break;
-    //    }
-
-    //    // Print "Attack" only once
-    //    if (hasAttacked == false) {
-    //        //Debug.Log("Attack");
-    //        AttackPlayer();
-    //        hasAttacked = true;
-    //    }
-
-    //    if (attackInterrupted) {
-    //        hasAttackStarted = false;
-    //        hasAttacked = false;
-    //        attackInterrupted = false;
-    //        yield break;
-    //    }
-
-    //    //if (player.Health <= 0) {
-    //    //    hasAttackStarted = false;
-    //    //    hasAttacked = false;
-    //    //    attackInterrupted = false;
-    //    //    yield break;
-    //    //}
-
-    //    // Wait for attack cooldown
-    //    yield return new WaitForSeconds(attackCooldown);
-
-    //    if (attackInterrupted) {
-    //        hasAttackStarted = false;
-    //        hasAttacked = false;
-    //        attackInterrupted = false;
-    //        yield break;
-    //    }
-
-    //    // Reset the flag and transition back to Chase state
-    //    hasAttacked = false;
-
-    //    if (!IsPlayerInFront()) {
-    //        currentState = (UnityEngine.Random.Range(0, 2) == 0) ? EnemyState.Idle : EnemyState.Chase;
-    //    }
-
-    //    hasAttackStarted = false;
-    //}
-
-
     IEnumerator AttackCoroutine() {
         visualAnimator.Play("attack", -1, 0);
 
@@ -516,7 +312,6 @@ public class Enemy : Character, IDamageable {
 
     void AttackIfNotAttacked() {
         if (!hasAttacked) {
-            //Debug.Log("Attack");
             AttackPlayer();
             hasAttacked = true;
         }
@@ -537,8 +332,6 @@ public class Enemy : Character, IDamageable {
         hasAttacked = false;
         attackInterrupted = false;
     }
-
-
 
     IEnumerator TransitionToChaseCoroutine(float a, float b) {
         float randomDelay = UnityEngine.Random.Range(a, b);

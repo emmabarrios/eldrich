@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Mapbox.Unity.Location;
 
 public class PlayerStatsManager: MonoBehaviour 
 {
@@ -21,7 +22,6 @@ public class PlayerStatsManager: MonoBehaviour
 
     [Header("Travel stats")]
     [SerializeField] private double traveledDistance;
-    [SerializeField] private double lastTraveledDistance;
     [SerializeField] private float maxDistance;
     [SerializeField] private float travelExp;
 
@@ -42,7 +42,10 @@ public class PlayerStatsManager: MonoBehaviour
     public int Damage { get { return (int)damage; } set { damage = value; } }
     public int Defense { get { return (int)defense; } set { defense = value; } }
 
-    private TimeTracker timeTracker;
+    //private TimeTracker timeTracker;
+    
+    [SerializeField]
+    private DeviceLocationProviderAndroidNative locationProvider;
 
     private void Awake() {
         if (instance == null) {
@@ -58,11 +61,15 @@ public class PlayerStatsManager: MonoBehaviour
         if (skillPointCost == 0) {
             skillPointCost = 5;
         }
+
+        locationProvider.OnDistanceChange += UpdateTraveledDistance;
+
     }
 
     public void LoadPlayerStats(Player character) {
 
         weaponAttack = CombatInventory.instance.WeaponItemSO._damage;
+        locationProvider = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>();
 
         character.Health = 100f + (vitality * 0.10f) + (strenght * 0.25f);
         character.Stamina = 100f + (endurance * 0.50f);
@@ -71,9 +78,13 @@ public class PlayerStatsManager: MonoBehaviour
 
         // Update Player attack cooldown values
         character.AttackCooldown += CombatInventory.instance.WeaponItemSO._attackCooldown;
+
+
     }
 
-
+    private void UpdateTraveledDistance(double distance) {
+        traveledDistance = distance;
+    }
     public void UpdateExperience(float exp) {
         earnedExp += exp;
         skillPoints = (int)Mathf.Floor(earnedExp / skillPointCost);
@@ -86,7 +97,7 @@ public class PlayerStatsManager: MonoBehaviour
 
         earnedExp = user.exp;
 
-        traveledDistance = lastTraveledDistance;
+        //traveledDistance = lastTraveledDistance;
 
         UpdateExperience(0);
         UpdateLastStats();

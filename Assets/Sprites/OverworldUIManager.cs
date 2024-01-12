@@ -49,10 +49,9 @@ public class OverworldUIManager : MonoBehaviour
         GameObject.Find("Defense Stat Card").transform.GetChild(3).GetComponent<Text>().text = PlayerStatsManager.instance.Defense.ToString();
 
         // Update next 100m card
-        int totalDistance = (int)GameObject.Find("Travel Distance Card").GetComponent<DeviceLocationProviderAndroidNative>().TotalTraveledDistance;
-        int nextPoint = 100 - totalDistance;
-
-        GameObject.Find("Travel Distance Card").transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = nextPoint.ToString();
+        //double totalDistance = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>().totalTraveledDistance;
+        //double nextPoint = 100 - totalDistance;
+        //GameObject.Find("Travel Distance Card").transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = nextPoint.ToString();
 
 
         // Update experience balance

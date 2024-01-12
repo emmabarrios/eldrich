@@ -15,7 +15,8 @@ MonoBehaviour:
   _enemy: {fileID: 7169145143124977247, guid: 1f103803995c9b14c99631a8c903e6a3, type: 3}
   _markerObject: {fileID: 29011562739958062, guid: f0adbe7ec1a1100479dd4a455ca685f4, type: 3}
   _itemList:
-  - {fileID: 11400000, guid: 0b027529a44418f47a33a3727fb75a3f, type: 2}
+  - {fileID: 11400000, guid: 9fc246521a9ab644d80f959f3111b2c4, type: 2}
+  - {fileID: 11400000, guid: 3b0bb2e726090054ba0aa20744e58007, type: 2}
   _weaponItemList:
   - {fileID: 11400000, guid: afac265dd2ee96443b1502fd785deaca, type: 2}
   _exp: 2

@@ -20,9 +20,10 @@ public class DatabaseManager : MonoBehaviour
 
     public DeviceLocationProviderAndroidNative locationProvider;
 
-    private double sessionTotalTraveledDistance;
-    public double SessionTotalTraveledDistance { get { return sessionTotalTraveledDistance; } set { sessionTotalTraveledDistance = value; } }
+    //private double sessionTotalTraveledDistance;
+    //public double SessionTotalTraveledDistance { get { return sessionTotalTraveledDistance; } set { sessionTotalTraveledDistance = value; } }
 
+    [SerializeField]
     private User loadedUser;
 
     private void Awake() {
@@ -44,14 +45,13 @@ public class DatabaseManager : MonoBehaviour
 
     public void CreateOrUpdateUser() {
 
-        // Sample data for user creation
         User newUser = new User {
             userId = this.user.UserId,
             weaponItems = inventory.GetWeaponItemsAsStrings(),
             quickItems = inventory.GetQuickItemsAsStrings(),
             exp = statsManager.EarnedExperience,
-            totalTraveledDistance = loadedUser.totalTraveledDistance + SessionTotalTraveledDistance,
-            totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged + 1 : loadedUser.totalDaysLogged,
+            //totalTraveledDistance = loadedUser.totalTraveledDistance + locationProvider.totalTraveledDistance,
+            totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,
             lastLoggedDay = DateTime.Today.ToString("yyyy-MM-dd"),
             stats = new Stats {
                 vitality = statsManager.Vitality,
@@ -96,9 +96,9 @@ public class DatabaseManager : MonoBehaviour
                     DataSnapshot snapshot = task.Result;
                     if (snapshot.Exists) {
                         string json = snapshot.GetRawJsonValue();
-                        loadedUser = JsonUtility.FromJson<User>(json);
+                        this.loadedUser = JsonUtility.FromJson<User>(json);
 
-                        AssignLoadedUserData(loadedUser);
+                        AssignLoadedUserData(this.loadedUser);
 
                     } else {
                         Debug.LogWarning("User data not found for userId: " + userId);
@@ -108,17 +108,22 @@ public class DatabaseManager : MonoBehaviour
         } else {
             Debug.Log("user is empty");
         }
+
+        Debug.Log(loadedUser.lastLoggedDay);
+
+    }
+
+    // Debug function
+    public void PrintUser() {
+
+        Debug.Log(IsCurrentDay(loadedUser.lastLoggedDay));
+        Debug.Log(loadedUser.lastLoggedDay);
+        Debug.Log(DateTime.Today.ToString("yyyy-MM-dd"));
+
     }
 
     private bool IsCurrentDay(string dateString) {
-        // Convert the string to DateTime
-        if (DateTime.TryParse(dateString, out DateTime date)) {
-            // Compare with the current date
-            return date.Date == DateTime.Now.Date;
-        }
-
-        // Invalid date string
-        return false;
+        return dateString == DateTime.Today.ToString("yyyy-MM-dd");
     }
 
     private void AssignLoadedUserData(User loadedUser) {
@@ -144,4 +149,5 @@ public class DatabaseManager : MonoBehaviour
     public void SaveGame() {
         CreateOrUpdateUser();
     }
+
 }
