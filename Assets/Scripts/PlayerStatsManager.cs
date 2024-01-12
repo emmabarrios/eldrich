@@ -45,7 +45,7 @@ public class PlayerStatsManager: MonoBehaviour
     //private TimeTracker timeTracker;
     
     [SerializeField]
-    private DeviceLocationProviderAndroidNative locationProvider;
+    //private DeviceLocationProviderAndroidNative locationProvider;
 
     private void Awake() {
         if (instance == null) {
@@ -62,14 +62,14 @@ public class PlayerStatsManager: MonoBehaviour
             skillPointCost = 5;
         }
 
-        locationProvider.OnDistanceChange += UpdateTraveledDistance;
+        //locationProvider.OnDistanceChange += UpdateTraveledDistance;
 
     }
 
     public void LoadPlayerStats(Player character) {
 
         weaponAttack = CombatInventory.instance.WeaponItemSO._damage;
-        locationProvider = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>();
+        //locationProvider = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>();
 
         character.Health = 100f + (vitality * 0.10f) + (strenght * 0.25f);
         character.Stamina = 100f + (endurance * 0.50f);

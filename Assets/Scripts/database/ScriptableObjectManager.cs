@@ -7,6 +7,8 @@ public class ScriptableObjectManager : MonoBehaviour {
     // Dictionary to store Scriptable Objects based on name
     private Dictionary<string, Item> scriptableObjectsDictionary = new Dictionary<string, Item>();
 
+    public Item[] scriptableObjects;
+
     private void Awake() {
         if (instance == null) {
             instance = this;
@@ -20,7 +22,7 @@ public class ScriptableObjectManager : MonoBehaviour {
     }
 
     private void InitializeDictionary() {
-        Item[] scriptableObjects = Resources.LoadAll<Item>("ScriptableObjects");
+        scriptableObjects = Resources.LoadAll<Item>("ScriptableObjects");
 
         foreach (Item so in scriptableObjects) {
             // Add each Scriptable Object to the dictionary using its name

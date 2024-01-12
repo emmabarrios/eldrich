@@ -11,7 +11,7 @@
 
     public class DeviceLocationProviderAndroidNative : AbstractLocationProvider, IDisposable
 	{
-		public Action<double> OnDistanceChange;
+		//public Action<double> OnDistanceChange;
 
 		/// <summary>
 		/// The minimum distance (measured in meters) a device must move laterally before location is updated. 
@@ -132,6 +132,7 @@
 					_pollLocation = StartCoroutine(locationRoutine());
 				}
 			}
+
 		}
 
 
@@ -333,7 +334,7 @@
 				double distance = CalculateDistance(locationHistory[locationHistory.Count - 2], _currentLocation.LatitudeLongitude);
 				totalTraveledDistance += distance;
 
-				OnDistanceChange?.Invoke(totalTraveledDistance);
+				//OnDistanceChange?.Invoke(totalTraveledDistance);
 
 				// Check if the total traveled distance is greater than or equal to 100 meters
 				//if (totalTraveledDistance >= 100f) {

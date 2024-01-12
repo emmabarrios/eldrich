@@ -5,6 +5,7 @@ using Firebase.Extensions;
 using UnityEngine;
 using Mapbox.Unity.Location;
 using System;
+using TMPro;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class DatabaseManager : MonoBehaviour
     public PlayerStatsManager statsManager;
     public GeneralInventory inventory;
 
-    public DeviceLocationProviderAndroidNative locationProvider;
+    //public DeviceLocationProviderAndroidNative locationProvider;
 
     //private double sessionTotalTraveledDistance;
     //public double SessionTotalTraveledDistance { get { return sessionTotalTraveledDistance; } set { sessionTotalTraveledDistance = value; } }
@@ -50,7 +51,7 @@ public class DatabaseManager : MonoBehaviour
             weaponItems = inventory.GetWeaponItemsAsStrings(),
             quickItems = inventory.GetQuickItemsAsStrings(),
             exp = statsManager.EarnedExperience,
-            //totalTraveledDistance = loadedUser.totalTraveledDistance + locationProvider.totalTraveledDistance,
+            totalTraveledDistance = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>().totalTraveledDistance,
             totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,
             lastLoggedDay = DateTime.Today.ToString("yyyy-MM-dd"),
             stats = new Stats {
@@ -68,7 +69,7 @@ public class DatabaseManager : MonoBehaviour
 
 
         //Enable Game Saved UI text
-        GameObject.Find("Options Panel").transform.GetChild(1).gameObject.SetActive(true);
+        //GameObject.Find("GameSavedText").GetComponent<TextMeshProUGUI>().text = "GAME SAVED";
     }
 
     public void DeleteUser() {
@@ -113,15 +114,6 @@ public class DatabaseManager : MonoBehaviour
 
     }
 
-    // Debug function
-    public void PrintUser() {
-
-        Debug.Log(IsCurrentDay(loadedUser.lastLoggedDay));
-        Debug.Log(loadedUser.lastLoggedDay);
-        Debug.Log(DateTime.Today.ToString("yyyy-MM-dd"));
-
-    }
-
     private bool IsCurrentDay(string dateString) {
         return dateString == DateTime.Today.ToString("yyyy-MM-dd");
     }
@@ -129,7 +121,7 @@ public class DatabaseManager : MonoBehaviour
     private void AssignLoadedUserData(User loadedUser) {
         foreach (var weaponItem in loadedUser.weaponItems) {
             if (weaponItem != null) {
-                Debug.Log("Weapon Item: " + weaponItem);
+                //Debug.Log("Weapon Item: " + weaponItem);
                 GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
             }
 
