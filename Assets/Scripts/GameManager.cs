@@ -327,9 +327,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator LoadCharacter(GameObject obj, Transform tsfm) {
         GameObject loadedCharacter = Instantiate(obj, tsfm.position, tsfm.rotation);
 
-        // Wait until the loaded character's Awake and Start methods are called
-        //yield return new WaitUntil(() => loadedCharacter.GetComponent<Character>() != null);
-
         yield return new WaitUntil(ObjectComponentIsNotNull);
 
         bool ObjectComponentIsNotNull() {
@@ -369,18 +366,4 @@ public class GameManager : MonoBehaviour
     public void StopBattleAudioLoop() {
         audioSource.Stop();
     }
-
-    //private void UpdateOverworldUI() {
-    //    GameObject.Find("Quick Item Card Container").GetComponent<QuickItemsCardGroup>().UpdateCardGroupContent(GeneralInventory.instance);
-    //}
-
-    //private IEnumerator LoadDatabaseData() {
-        
-    //    while (GameObject.Find("DatabaseManager") == null) {
-    //        yield return new WaitForSeconds(.5f);
-    //        Debug.Log("waiting...");
-    //    }
-    //    Debug.Log("found");
-    //    DatabaseManager.instance.LoadUserData();
-    //}
 }

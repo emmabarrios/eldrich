@@ -7,6 +7,7 @@ using Mapbox.Unity.Location;
 using System;
 using TMPro;
 using System.Collections.Generic;
+using System.Globalization;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -47,17 +48,20 @@ public class DatabaseManager : MonoBehaviour
 
         List<string> tempQuickItems = inventory.GetWeaponItemsAsStrings();
         List<string> tempWeaponItems = inventory.GetWeaponItemsAsStrings();
+        List<string> tempLoggedDays = loadedUser.loggedDays;
 
 
         // Gather items from both combat and general inventory
         tempQuickItems.AddRange(CombatInventory.instance.GetQuickItemsAsStrings());
         tempWeaponItems.Add(CombatInventory.instance.GetEquipedWeaponAsString());
+        tempLoggedDays.Add(DateTime.Today.ToString("yyyy-MM-dd"));
 
 
         User newUser = new User {
             userId = this.user.UserId,
             weaponItems = tempWeaponItems,
             quickItems = tempQuickItems,
+            loggedDays = tempLoggedDays,
             exp = statsManager.EarnedExperience,
             totalTraveledDistance = loadedUser.totalTraveledDistance + TraveledDistanceTracker.instance.CurrentTraveledDistance,
             totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,
@@ -111,6 +115,21 @@ public class DatabaseManager : MonoBehaviour
 
                         this.loadedUser = temUser;
 
+                        // Check if more than two days has passed to nerf the players stats
+
+                        if (!IsCurrentDay(loadedUser.lastLoggedDay)) {
+                            DateTime lastLoggedDate = DateTime.ParseExact(loadedUser.lastLoggedDay, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                            DateTime currentDay = DateTime.Today;
+
+                            TimeSpan difference = currentDay - lastLoggedDate;
+
+                            if (difference.Days >= 2) {
+                                loadedUser.stats.vitality -=1;
+                                loadedUser.stats.endurance -=1;
+                                loadedUser.stats.strength -=1;
+                            }
+                        }
+
                         AssignLoadedUserData(temUser);
 
                     } else {
@@ -122,8 +141,6 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("user is empty");
         }
 
-        //Debug.Log(loadedUser.lastLoggedDay);
-
     }
 
     private bool IsCurrentDay(string dateString) {
@@ -131,13 +148,14 @@ public class DatabaseManager : MonoBehaviour
     }
 
     private void AssignLoadedUserData(User loadedUser) {
-        //foreach (var weaponItem in loadedUser.weaponItems) {
-        //    if (weaponItem != null || weaponItem != "") {
-        //        Debug.Log("Weapon Item: " + weaponItem);
-        //        GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
-        //    }
 
-        //}
+        foreach (var weaponItem in loadedUser.weaponItems) {
+            if (weaponItem != null || weaponItem != "") {
+                Debug.Log("Weapon Item: " + weaponItem);
+                GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
+            }
+
+        }
 
         foreach (var quickItem in loadedUser.quickItems) {
             if (quickItem != null || quickItem!="") {

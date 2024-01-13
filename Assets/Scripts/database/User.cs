@@ -6,6 +6,7 @@ public class User
     public string userId;
     public List<string> weaponItems;
     public List<string> quickItems;
+    public List<string> loggedDays;
     public int exp;
     public Stats stats;
     public double totalTraveledDistance;
