@@ -4649,6 +4649,10 @@ PrefabInstance:
       propertyPath: meterExpLimit
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6927943118219600524, guid: 033b6c30afe10ff48b156c39965d037a, type: 3}
+      propertyPath: expPerMeterLimit
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

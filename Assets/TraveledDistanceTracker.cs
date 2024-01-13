@@ -18,8 +18,10 @@ public class TraveledDistanceTracker : MonoBehaviour
     public TextMeshProUGUI distanceUI;
 
     private int distanceExpPoints;
+    
 
     public int meterExpLimit;
+    public int expPerMeterLimit;
 
     private void Awake() {
         if (instance == null) {
@@ -48,7 +50,7 @@ public class TraveledDistanceTracker : MonoBehaviour
         currentTraveledDistance += distance;
 
         if (Mathf.FloorToInt((float)currentTraveledDistance) % meterExpLimit == 0) {
-            distanceExpPoints++;
+            distanceExpPoints += expPerMeterLimit;
             PlayerStatsManager.instance.UpdateExperience(distanceExpPoints);
             distanceExpPoints = 0;
         }
