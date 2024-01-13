@@ -65,6 +65,8 @@ public class GeneralInventory : MonoBehaviour
     }
 
 
+
+
     public void RemoveItem(Item item) {
         if (item is QuickItem) {
             if (storedQuickItemList.Contains((QuickItem)item)) {

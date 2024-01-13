@@ -6,6 +6,7 @@ using UnityEngine;
 using Mapbox.Unity.Location;
 using System;
 using TMPro;
+using System.Collections.Generic;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -37,19 +38,26 @@ public class DatabaseManager : MonoBehaviour
     }
 
     void Start() {
-
         user = AuthManager.instance.GetFirebaseUser();
         userId = AuthManager.instance.GetFirebaseUserId();
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-
     }
 
     public void CreateOrUpdateUser() {
 
+        List<string> tempQuickItems = inventory.GetWeaponItemsAsStrings();
+        List<string> tempWeaponItems = inventory.GetWeaponItemsAsStrings();
+
+
+        // Gather items from both combat and general inventory
+        tempQuickItems.AddRange(CombatInventory.instance.GetQuickItemsAsStrings());
+        tempWeaponItems.Add(CombatInventory.instance.GetEquipedWeaponAsString());
+
+
         User newUser = new User {
             userId = this.user.UserId,
-            weaponItems = inventory.GetWeaponItemsAsStrings(),
-            quickItems = inventory.GetQuickItemsAsStrings(),
+            weaponItems = tempWeaponItems,
+            quickItems = tempQuickItems,
             exp = statsManager.EarnedExperience,
             totalTraveledDistance = loadedUser.totalTraveledDistance + TraveledDistanceTracker.instance.CurrentTraveledDistance,
             totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,

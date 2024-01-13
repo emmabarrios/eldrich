@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CombatInventory : MonoBehaviour
@@ -59,5 +60,24 @@ public class CombatInventory : MonoBehaviour
 
     public WeaponItem GetEquipedWeaponIten() {
         return WeaponItemSO;
+    }
+
+    public List<string> GetQuickItemsAsStrings() {
+        List<string> quickItemStrings = new List<string>();
+
+        foreach (List<QuickItem> itemList in itemLists) {
+            List<string> itemStrings = itemList.Select(item => item.ToString()).ToList();
+            quickItemStrings.AddRange(itemStrings);
+        }
+
+        if (quickItemStrings.Count > 0) {
+            return quickItemStrings;
+        }
+
+        return null;
+    }
+
+    public string GetEquipedWeaponAsString() {
+        return WeaponItemSO.ToString();
     }
 }
