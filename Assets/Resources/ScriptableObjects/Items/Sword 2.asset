@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Sword 2
   _description: Sword goes whoosh
-  _sprite: {fileID: 21300000, guid: 3b709adcf12278f4194d1ab6beb36548, type: 3}
-  _menuSprite: {fileID: 21300000, guid: 3b709adcf12278f4194d1ab6beb36548, type: 3}
+  _sprite: {fileID: 21300000, guid: d84167e58e9492d41b401d6cb0ddccc4, type: 3}
+  _menuSprite: {fileID: 21300000, guid: d84167e58e9492d41b401d6cb0ddccc4, type: 3}
   _modelPrefab: {fileID: 6013990982369288243, guid: 446537a5e4bab814fb6203cbd4680b71, type: 3}
   _discoverability: 50
   _price: 500

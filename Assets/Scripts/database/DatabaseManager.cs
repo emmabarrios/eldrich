@@ -46,16 +46,29 @@ public class DatabaseManager : MonoBehaviour
 
     public void CreateOrUpdateUser() {
 
-        List<string> tempQuickItems = inventory.GetWeaponItemsAsStrings();
-        List<string> tempWeaponItems = inventory.GetWeaponItemsAsStrings();
-        List<string> tempLoggedDays = loadedUser.loggedDays;
+        List<string> tempQuickItems = new List<string>();
+        List<string> tempWeaponItems = new List<string>();
+        List<string> tempLoggedDays = new List<string>();
 
+        tempQuickItems = inventory.GetQuickItemsAsStrings();
+        tempWeaponItems = inventory.GetWeaponItemsAsStrings();
+        tempLoggedDays = loadedUser.loggedDays;
 
         // Gather items from both combat and general inventory
-        tempQuickItems.AddRange(CombatInventory.instance.GetQuickItemsAsStrings());
-        tempWeaponItems.Add(CombatInventory.instance.GetEquipedWeaponAsString());
-        tempLoggedDays.Add(DateTime.Today.ToString("yyyy-MM-dd"));
+        if (CombatInventory.instance.GetQuickItemsAsStrings() != null) {
+            tempQuickItems.AddRange(CombatInventory.instance.GetQuickItemsAsStrings());
+        }
 
+        if (CombatInventory.instance.GetEquipedWeaponAsString() != null) {
+            tempWeaponItems.Add(CombatInventory.instance.GetEquipedWeaponAsString());
+        }
+
+        if (!IsCurrentDay(loadedUser.lastLoggedDay)) {
+            tempLoggedDays.Add(DateTime.Today.ToString("yyyy-MM-dd"));
+        }
+
+        // Clean weapon item string list
+        tempWeaponItems.RemoveAll(s => s == "Sword 1");
 
         User newUser = new User {
             userId = this.user.UserId,
@@ -78,10 +91,6 @@ public class DatabaseManager : MonoBehaviour
 
         // Set user data in the database
         dbReference.Child("users").Child(userId).SetRawJsonValueAsync(json);
-
-
-        //Enable Game Saved UI text
-        //GameObject.Find("GameSavedText").GetComponent<TextMeshProUGUI>().text = "GAME SAVED";
     }
 
     public void DeleteUser() {
@@ -124,13 +133,13 @@ public class DatabaseManager : MonoBehaviour
                             TimeSpan difference = currentDay - lastLoggedDate;
 
                             if (difference.Days >= 2) {
-                                loadedUser.stats.vitality -=1;
-                                loadedUser.stats.endurance -=1;
-                                loadedUser.stats.strength -=1;
+                                loadedUser.stats.vitality = (loadedUser.stats.vitality > 1) ? loadedUser.stats.vitality -= 1 : loadedUser.stats.vitality;
+                                loadedUser.stats.endurance = (loadedUser.stats.endurance > 1) ? loadedUser.stats.endurance -= 1 : loadedUser.stats.endurance;
+                                loadedUser.stats.strength = (loadedUser.stats.strength > 1) ? loadedUser.stats.strength -= 1 : loadedUser.stats.strength;
                             }
                         }
 
-                        AssignLoadedUserData(temUser);
+                        AssignLoadedUserData(loadedUser);
 
                     } else {
                         Debug.LogWarning("User data not found for userId: " + userId);

@@ -80,6 +80,7 @@ public class ItemCardUI : MonoBehaviour
     public void SendItemToGeneralInventory() {
         if (item!=null) {
             GeneralInventory.instance.AddItem(GetItem());
+            CombatInventory.instance.RemoveItem(rowNumber,colNumber);
             ResetCard();
         }
     }

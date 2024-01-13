@@ -16,6 +16,7 @@ MonoBehaviour:
   _markerObject: {fileID: 4697271925970358309, guid: 783e74ec3a5f5e24c832d11f908e7126, type: 3}
   _itemList:
   - {fileID: 11400000, guid: 8a8993b13b2bc0145a0e2dd2e765dfb5, type: 2}
+  - {fileID: 11400000, guid: 8a8993b13b2bc0145a0e2dd2e765dfb5, type: 2}
   _weaponItemList:
-  - {fileID: 11400000, guid: afac265dd2ee96443b1502fd785deaca, type: 2}
+  - {fileID: 11400000, guid: 3868fb54a1d981c459caa800295d558b, type: 2}
   _exp: 3

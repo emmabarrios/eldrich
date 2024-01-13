@@ -66,8 +66,11 @@ public class CombatInventory : MonoBehaviour
         List<string> quickItemStrings = new List<string>();
 
         foreach (List<QuickItem> itemList in itemLists) {
-            List<string> itemStrings = itemList.Select(item => item.ToString()).ToList();
-            quickItemStrings.AddRange(itemStrings);
+            if (itemList != null) {
+                // Use null-conditional operator to handle null items
+                List<string> itemStrings = itemList.Select(item => item?.ToString()).Where(s => !string.IsNullOrEmpty(s)).ToList();
+                quickItemStrings.AddRange(itemStrings);
+            }
         }
 
         if (quickItemStrings.Count > 0) {

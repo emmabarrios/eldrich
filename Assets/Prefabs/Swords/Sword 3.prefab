@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 464671709558411246, guid: 9bf516c516b2c204396ea73f88eac754, type: 3}
@@ -60,6 +61,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8743687398419665243, guid: 9bf516c516b2c204396ea73f88eac754, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5921487992332311044}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bf516c516b2c204396ea73f88eac754, type: 3}
 --- !u!4 &8442427957398534293 stripped
 Transform:
@@ -71,6 +78,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 8442427957398534293}
     m_Modifications:
     - target: {fileID: 3546183286804972514, guid: 36589f066b25b1b4dab74eb18d6972fd, type: 3}
@@ -122,4 +130,12 @@ PrefabInstance:
       value: Sword14_Blue
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36589f066b25b1b4dab74eb18d6972fd, type: 3}
+--- !u!4 &5921487992332311044 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3546183286804972514, guid: 36589f066b25b1b4dab74eb18d6972fd, type: 3}
+  m_PrefabInstance: {fileID: 7141524961868732902}
+  m_PrefabAsset: {fileID: 0}

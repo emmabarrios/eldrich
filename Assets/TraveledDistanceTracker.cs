@@ -49,7 +49,7 @@ public class TraveledDistanceTracker : MonoBehaviour
     private void UpdateCurrentTrveledDistance(double distance) {
         currentTraveledDistance += distance;
 
-        if (Mathf.FloorToInt((float)currentTraveledDistance) % meterExpLimit == 0) {
+        if ((Mathf.FloorToInt((float)currentTraveledDistance) % meterExpLimit == 0) && currentTraveledDistance > 1f) {
             distanceExpPoints += expPerMeterLimit;
             PlayerStatsManager.instance.UpdateExperience(distanceExpPoints);
             distanceExpPoints = 0;
