@@ -19,7 +19,7 @@ MonoBehaviour:
   _modelPrefab: {fileID: 6231215843636208481, guid: dbb9f24d3cc91dc44996607ca830ecb8, type: 3}
   _discoverability: 50
   _price: 500
-  _equipmentPrefab: {fileID: 952802527015294292, guid: 9bf516c516b2c204396ea73f88eac754, type: 3}
+  _equipmentPrefab: {fileID: 92146745497795738, guid: 26d231cad172ff045b5969c42e5e41e3, type: 3}
   _weight: 0
   _strenghtRequirement: 0
   _staminaCost: 0
