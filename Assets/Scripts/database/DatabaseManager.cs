@@ -8,6 +8,9 @@ using System;
 using TMPro;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
+using System.Collections;
+using System.Threading;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -18,13 +21,9 @@ public class DatabaseManager : MonoBehaviour
     public string userId;
 
     public DatabaseReference dbReference;
-    public PlayerStatsManager statsManager;
-    public GeneralInventory inventory;
 
-    //public DeviceLocationProviderAndroidNative locationProvider;
-
-    //private double sessionTotalTraveledDistance;
-    //public double SessionTotalTraveledDistance { get { return sessionTotalTraveledDistance; } set { sessionTotalTraveledDistance = value; } }
+    public Action<string> OnTaskResult;
+    public Action<string> OnAccountTaskResultError;
 
     [SerializeField]
     private User loadedUser;
@@ -39,69 +38,128 @@ public class DatabaseManager : MonoBehaviour
     }
 
     void Start() {
-        user = AuthManager.instance.GetFirebaseUser();
-        userId = AuthManager.instance.GetFirebaseUserId();
-        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        InitializeFirebaseDatabase();
     }
 
     public void CreateOrUpdateUser() {
+        
 
-        List<string> tempQuickItems = new List<string>();
-        List<string> tempWeaponItems = new List<string>();
-        List<string> tempLoggedDays = new List<string>();
+        if (user!=null) {
 
-        tempQuickItems = inventory.GetQuickItemsAsStrings();
-        tempWeaponItems = inventory.GetWeaponItemsAsStrings();
-        tempLoggedDays = loadedUser.loggedDays;
+            PlayerStatsManager statsManager = PlayerStatsManager.instance;
+            GeneralInventory inventory = GeneralInventory.instance;
 
-        // Gather items from both combat and general inventory
-        if (CombatInventory.instance.GetQuickItemsAsStrings() != null) {
-            tempQuickItems.AddRange(CombatInventory.instance.GetQuickItemsAsStrings());
+            List<string> tempQuickItems = new List<string>();
+            List<string> tempWeaponItems = new List<string>();
+            List<string> tempLoggedDays = new List<string>();
+
+            tempQuickItems = inventory.GetQuickItemsAsStrings();
+            tempWeaponItems = inventory.GetWeaponItemsAsStrings();
+            tempLoggedDays = loadedUser.loggedDays;
+
+            // Gather items from both combat and general inventory
+            if (CombatInventory.instance.GetQuickItemsAsStrings() != null) {
+                tempQuickItems.AddRange(CombatInventory.instance.GetQuickItemsAsStrings());
+            }
+
+            if (CombatInventory.instance.GetEquipedWeaponAsString() != null) {
+                tempWeaponItems.Add(CombatInventory.instance.GetEquipedWeaponAsString());
+            }
+
+            if (!IsCurrentDay(loadedUser.lastLoggedDay)) {
+                tempLoggedDays.Add(DateTime.Today.ToString("yyyy-MM-dd"));
+            }
+
+            // Clean weapon item string list
+            tempWeaponItems.RemoveAll(s => s == "Sword 1");
+
+            User newUser = new User {
+                userId = this.user.UserId,
+                weaponItems = tempWeaponItems,
+                quickItems = tempQuickItems,
+                loggedDays = tempLoggedDays,
+                exp = statsManager.EarnedExperience,
+                totalTraveledDistance = loadedUser.totalTraveledDistance + TraveledDistanceTracker.instance.CurrentTraveledDistance,
+                totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,
+                lastLoggedDay = DateTime.Today.ToString("yyyy-MM-dd"),
+                stats = new Stats {
+                    vitality = statsManager.Vitality,
+                    endurance = statsManager.Endurance,
+                    strength = statsManager.Strenght
+                }
+            };
+
+            // Convert user object to JSON
+            string json = JsonUtility.ToJson(newUser);
+
+            // Set user data in the database
+            dbReference.Child("users").Child(userId).SetRawJsonValueAsync(json);
         }
+    }
 
-        if (CombatInventory.instance.GetEquipedWeaponAsString() != null) {
-            tempWeaponItems.Add(CombatInventory.instance.GetEquipedWeaponAsString());
-        }
+    public void InitializeFirebaseDatabase() {
+        user = AuthManager.instance.GetFirebaseUser();
+        userId = AuthManager.instance.GetFirebaseUserId();
 
-        if (!IsCurrentDay(loadedUser.lastLoggedDay)) {
-            tempLoggedDays.Add(DateTime.Today.ToString("yyyy-MM-dd"));
-        }
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+            FirebaseApp app = FirebaseApp.DefaultInstance;
+            if (app == null) {
+                OnTaskResult?.Invoke("Failed to initialize Firebase.");
+                return;
+            }
 
-        // Clean weapon item string list
-        tempWeaponItems.RemoveAll(s => s == "Sword 1");
+            // Initialize the Firebase Realtime Database
+            dbReference = FirebaseDatabase.DefaultInstance.RootReference;
 
+        });
+    }
+
+    public void ResetUserData() {
         User newUser = new User {
             userId = this.user.UserId,
-            weaponItems = tempWeaponItems,
-            quickItems = tempQuickItems,
-            loggedDays = tempLoggedDays,
-            exp = statsManager.EarnedExperience,
-            totalTraveledDistance = loadedUser.totalTraveledDistance + TraveledDistanceTracker.instance.CurrentTraveledDistance,
-            totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,
-            lastLoggedDay = DateTime.Today.ToString("yyyy-MM-dd"),
+            weaponItems = null,
+            quickItems = null,
+            loggedDays = null,
+            exp = 0,
+            totalTraveledDistance = 0,
+            totalDaysLogged = 0,
+            lastLoggedDay = null,
             stats = new Stats {
-                vitality = statsManager.Vitality,
-                endurance = statsManager.Endurance,
-                strength = statsManager.Strenght
+                vitality = 0,
+                endurance = 0,
+                strength = 0
             }
         };
-
-        // Convert user object to JSON
-        string json = JsonUtility.ToJson(newUser);
-
-        // Set user data in the database
-        dbReference.Child("users").Child(userId).SetRawJsonValueAsync(json);
     }
 
-    public void DeleteUser() {
-        dbReference.Child("users").Child(userId).RemoveValueAsync();
+    public async Task<bool> DeleteUserData() {
+
+        CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        CancellationToken token = cts.Token;
+
+        Task tsk = dbReference.Child("users").Child(userId).RemoveValueAsync();
+
+        // Use Task.WhenAny to wait for either tsk or a delay
+        var completedTask = await Task.WhenAny(tsk, Task.Delay(Timeout.Infinite, token));
+
+        // Check which task completed
+        if (completedTask == tsk) {
+            if(!tsk.IsFaulted || !tsk.IsCanceled) {
+                this.user = null;
+                return true;
+            }
+        }
+
+        return false;
     }
+   
 
     public void LoadUserData() {
         // Load references
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-        statsManager = PlayerStatsManager.instance;
-        inventory = GeneralInventory.instance;
+        PlayerStatsManager statsManager = PlayerStatsManager.instance;
+        GeneralInventory inventory = GeneralInventory.instance;
         userId = AuthManager.instance.GetFirebaseUserId();
 
         if (userId != "") {
@@ -180,5 +238,6 @@ public class DatabaseManager : MonoBehaviour
     public void SaveGame() {
         CreateOrUpdateUser();
     }
+
 
 }

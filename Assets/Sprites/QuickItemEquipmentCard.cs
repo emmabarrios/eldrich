@@ -78,6 +78,13 @@ public class QuickItemEquipmentCard : MonoBehaviour
                 // Spawn selected weapon on UI character
                 if (item is WeaponItem weaponItem) {
                     GameObject.Find("UICharacter").GetComponent<UICharacter>().SpawnWeaponOnPivot(weaponItem);
+
+                    // This part will work only on overworld scene
+                    GameObject playerPin = GameObject.Find("character_pin");
+
+                    if (playerPin!=null) {
+                        playerPin.GetComponent<UICharacter>().SpawnWeaponOnPivot(weaponItem);
+                    }
                 }
 
                 // Equip selected quick item on corresponding combat inventory slot 

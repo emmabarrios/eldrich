@@ -7,7 +7,8 @@ public static class Loader
     public enum Scene {
         MainScene,
         LoadingScene,
-        Overworld
+        Overworld,
+        TitleScene
     }
    public static void Load(Scene scene) {
         // Set the loader callback action to load the target scene

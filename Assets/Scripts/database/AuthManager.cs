@@ -4,6 +4,8 @@ using Firebase;
 using Firebase.Auth;
 using TMPro;
 using System.Threading.Tasks;
+using System;
+using System.Threading;
 
 public class AuthManager : MonoBehaviour {
 
@@ -15,20 +17,9 @@ public class AuthManager : MonoBehaviour {
     public FirebaseAuth auth;
     public FirebaseUser User;
 
-    //Login variables
-    [Header("Login")]
-    public TMP_InputField emailLoginField;
-    public TMP_InputField passwordLoginField;
-    public TMP_Text warningLoginText;
-    public TMP_Text confirmLoginText;
-
-    //Register variables
-    [Header("Register")]
-    public TMP_InputField usernameRegisterField;
-    public TMP_InputField emailRegisterField;
-    public TMP_InputField passwordRegisterField;
-    public TMP_InputField passwordRegisterVerifyField;
-    public TMP_Text warningRegisterText;
+    public Action<string> OnRegisterTaskResult; 
+    public Action<string> OnDeleteAccountTaskResultSuccess; 
+    public Action<string> OnDeleteAccountTaskResultError; 
 
     void Awake() {
 
@@ -44,44 +35,34 @@ public class AuthManager : MonoBehaviour {
             dependencyStatus = task.Result;
             if (dependencyStatus == DependencyStatus.Available) {
                 //If they are avalible Initialize Firebase
-                InitializeFirebase();
+                InitializeFirebaseAuth();
             } else {
                 Debug.LogError("Could not resolve all Firebase dependencies: " + dependencyStatus);
             }
         });
     }
 
-    private void InitializeFirebase() {
+
+    public void InitializeFirebaseAuth() {
         Debug.Log("Setting up Firebase Auth");
         //Set the authentication instance object
         auth = FirebaseAuth.DefaultInstance;
     }
 
-    //Function for the login button
-    public void LoginButton() {
-        //Call the login coroutine passing the email and password
-        StartCoroutine(Login(emailLoginField.text, passwordLoginField.text));
-    }
-    //Function for the register button
-    public void RegisterButton() {
-        //Call the register coroutine passing the email, password, and username
-        StartCoroutine(Register(emailRegisterField.text, passwordRegisterField.text, usernameRegisterField.text));
-    }
-
-    private IEnumerator Login(string _email, string _password) {
-        warningLoginText.text = "";
+    public IEnumerator Login(string email, string password) {
         //Call the Firebase auth signin function passing the email and password
-        Task<AuthResult> LoginTask = auth.SignInWithEmailAndPasswordAsync(_email, _password);
+        Task<AuthResult> LoginTask = auth.SignInWithEmailAndPasswordAsync(email, password);
         //Wait until the task completes
         yield return new WaitUntil(predicate: () => LoginTask.IsCompleted);
 
         if (LoginTask.Exception != null) {
             //If there are errors handle them
-            Debug.LogWarning(message: $"Failed to register task with {LoginTask.Exception}");
+            //Debug.LogWarning(message: $"Failed to register task with {LoginTask.Exception}");
             FirebaseException firebaseEx = LoginTask.Exception.GetBaseException() as FirebaseException;
             AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
 
             string message = "Login Failed!";
+
             switch (errorCode) {
                 case AuthError.MissingEmail:
                     message = "Missing Email";
@@ -99,31 +80,23 @@ public class AuthManager : MonoBehaviour {
                     message = "Account does not exist";
                     break;
             }
-            warningLoginText.text = message;
-        } else {
-            //User is now logged in
-            //Now get the result
-            User = LoginTask.Result.User;
-            Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
-            warningLoginText.text = "";
 
-            // Load overworld scene
-            Loader.Load(Loader.Scene.Overworld);
-            confirmLoginText.text = "Logged In";
+            OnRegisterTaskResult?.Invoke(message);
+        } else {
+            User = LoginTask.Result.User;
+            //Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
         }
     }
 
-    private IEnumerator Register(string _email, string _password, string _username) {
-        warningRegisterText.text = "";
-        if (_username == "") {
-            //If the username field is blank show a warning
-            warningRegisterText.text = "Missing Username";
-        } else if (passwordRegisterField.text != passwordRegisterVerifyField.text) {
+    public IEnumerator Register(string email, string password, string passwordConfirmation, string username) {
+        if (username == "") {
+            OnRegisterTaskResult?.Invoke("Missing Username");
+        } else if (password != passwordConfirmation) {
             //If the password does not match show a warning
-            warningRegisterText.text = "Password Does Not Match!";
+            OnRegisterTaskResult?.Invoke("Password Does Not Match!");
         } else {
             //Call the Firebase auth signin function passing the email and password
-            Task<AuthResult> RegisterTask = auth.CreateUserWithEmailAndPasswordAsync(_email, _password);
+            Task<AuthResult> RegisterTask = auth.CreateUserWithEmailAndPasswordAsync(email, password);
             //Wait until the task completes
             yield return new WaitUntil(predicate: () => RegisterTask.IsCompleted);
 
@@ -152,7 +125,7 @@ public class AuthManager : MonoBehaviour {
                         break;
 
                 }
-                warningRegisterText.text = message;
+                OnRegisterTaskResult?.Invoke(message);
             } else {
                 //User has now been created
                 //Now get the result
@@ -160,7 +133,7 @@ public class AuthManager : MonoBehaviour {
 
                 if (User != null) {
                     //Create a user profile and set the username
-                    UserProfile profile = new UserProfile { DisplayName = _username };
+                    UserProfile profile = new UserProfile { DisplayName = username };
 
                     //Call the Firebase auth update user profile function passing the profile with the username
                     Task ProfileTask = User.UpdateUserProfileAsync(profile);
@@ -172,16 +145,15 @@ public class AuthManager : MonoBehaviour {
                         Debug.LogWarning(message: $"Failed to register task with {ProfileTask.Exception}");
                         FirebaseException firebaseEx = ProfileTask.Exception.GetBaseException() as FirebaseException;
                         AuthError errorCode = (AuthError)firebaseEx.ErrorCode;
-                        warningRegisterText.text = "Username Set Failed!";
+                        OnRegisterTaskResult?.Invoke("Username Set Failed!");
                     } else {
                         //Username is now set
-                        //Now return to login| screen
-                        //UIManager.instance.LoginScreen();
-                        warningRegisterText.text = "User registered successfully!";
+                        OnRegisterTaskResult?.Invoke("User registered successfully!");
                     }
                 }
             }
         }
+
     }
 
     public string GetFirebaseUserId() {
@@ -195,4 +167,23 @@ public class AuthManager : MonoBehaviour {
         return auth.CurrentUser;
     }
 
+    public async Task<bool> DeleteAccount() {
+
+        CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        CancellationToken token = cts.Token;
+
+        Task tsk = auth.CurrentUser.DeleteAsync();
+
+        // Use Task.WhenAny to wait for either tsk or a delay
+        var completedTask = await Task.WhenAny(tsk, Task.Delay(Timeout.Infinite, token));
+
+        // Check which task completed
+        if (completedTask == tsk) {
+            if (!tsk.IsFaulted || !tsk.IsCanceled) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
