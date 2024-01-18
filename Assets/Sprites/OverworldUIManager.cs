@@ -14,10 +14,12 @@ public class OverworldUIManager : MonoBehaviour
 
     // Start is called before the first frame update
     public void DisplayStartEventPanel() {
-        if (isEventUiPanelActive == false) {
-            eventUiPanel.SetActive(true);
-            isEventUiPanelActive = true;
-        }
+        //if (isEventUiPanelActive == false) {
+        //    eventUiPanel.SetActive(true);
+        //    isEventUiPanelActive = true;
+        //}
+
+        eventUiPanel.SetActive(true);
     }
 
     //public void DisplayUserNotInRangeEventPanel() {

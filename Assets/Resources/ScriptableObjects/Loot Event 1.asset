@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Loot Event 1
   m_EditorClassIdentifier: 
   _enemy: {fileID: 0}
-  _markerObject: {fileID: 3842816125738080115, guid: ecf6cef1c5ed15342b9536e70c1ac90d, type: 3}
-  _itemList:
+  _pinObject: {fileID: 3842816125738080115, guid: ecf6cef1c5ed15342b9536e70c1ac90d, type: 3}
+  _loot:
   - {fileID: 11400000, guid: 8a8993b13b2bc0145a0e2dd2e765dfb5, type: 2}
-  _weaponItemList: []
   _exp: 3
+  _eventType: 1

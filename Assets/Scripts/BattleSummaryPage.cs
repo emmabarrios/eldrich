@@ -18,10 +18,10 @@ public class BattleSummaryPage : MonoBehaviour
     private void UpdateTextContent() {
 
         if (textArea != null) {
-            List<QuickItem> itemlist = GameManager.instance.GetQuickItemList();
+            List<Item> itemlist = GameManager.instance.GetLoot();
 
             // Update text for dropped items
-            foreach (QuickItem item in itemlist) {
+            foreach (Item item in itemlist) {
                 textArea.text += $"{item._name}.\n";
             }
 

@@ -77,13 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1d95759035aa0147a4c52aa5f8e68f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 50
-  amplitude: 0.5
-  frequencey: 0.5
-  moveRange: 2
-  eventScriptableObject: {fileID: 11400000, guid: d67424352e8cddd4283f25bf2e5ddcf3, type: 2}
-  markerObject: {fileID: 0}
-  eventType: 1
+  worldEventSO: {fileID: 11400000, guid: d67424352e8cddd4283f25bf2e5ddcf3, type: 2}
+  visualInteractionEffect: {fileID: 2312591318274358134, guid: 77da29788f3010e4396994ea52057980, type: 3}
 --- !u!65 &7897381172237037291
 BoxCollider:
   m_ObjectHideFlags: 0
