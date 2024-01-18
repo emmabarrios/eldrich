@@ -27,12 +27,6 @@ public class OverworldUIManager : MonoBehaviour
     //    }
     //}
 
-    public void CloseButtonClick() {
-        eventUiPanel.SetActive(false);
-        //eventPanelUserNotInRange.SetActive(false);
-        isEventUiPanelActive = false;
-
-    }
 
     public void UpdateStatsUIContent() {
 

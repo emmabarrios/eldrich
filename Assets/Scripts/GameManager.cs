@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Background music tracks")]
     public AudioClip battleAudio;
+    public AudioClip overworldAudio;
     AudioSource audioSource;
 
     [Header("Battle Settings")]
@@ -69,6 +70,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Last Combat results")]
     public bool wasEnemyDefeated = false;
+
+    [Header("Volumen Settings")]
+    public float globalVolume = 1.0f; // Default volume is 100%
 
     private void Awake() {
 
@@ -91,6 +95,11 @@ public class GameManager : MonoBehaviour
 
             case "MainScene":
                 if (isOnCombatScene == false) {
+
+                    StopBackgroundAudioLoop();
+
+                    UpdateAllAudioSources();
+
                     isOnCombatScene = true;
                     isOnOverworldScene = false;
 
@@ -106,10 +115,15 @@ public class GameManager : MonoBehaviour
             
             case "Overworld":
                 if (isOnOverworldScene == false) {
+                    StopBackgroundAudioLoop();
+
+                    UpdateAllAudioSources();
+                    
                     isOnOverworldScene = true;
                     isOnCombatScene = false;
                     state = GameStates.LoadingWorldAssets;
-                    
+
+                    PlayOverworldBackgroundAudio();
                     //UpdateOverworldUI();
                 }
                 break;
@@ -208,7 +222,7 @@ public class GameManager : MonoBehaviour
                     } else {
                         RandomPrefabSpawner.instance.ToggleInstances();
                     }
-                    StopBattleAudioLoop();
+                    //StopBackgroundAudioLoop();
                     
                 }
 
@@ -363,7 +377,34 @@ public class GameManager : MonoBehaviour
             audioSource.Play();
         }
     }
-    public void StopBattleAudioLoop() {
+
+    public void PlayOverworldBackgroundAudio() {
+        // Check if the audio source is not playing to avoid overlapping
+        if (!audioSource.isPlaying) {
+            audioSource.clip = overworldAudio;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+    }
+
+
+    public void StopBackgroundAudioLoop() {
         audioSource.Stop();
+    }
+
+    public float GlobalVolume {
+        get { return globalVolume; }
+        set {
+            globalVolume = Mathf.Clamp01(value); // Ensure volume is between 0 and 1
+            UpdateAllAudioSources();
+        }
+    }
+
+    private void UpdateAllAudioSources() {
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources) {
+            audioSource.volume = globalVolume;
+        }
     }
 }

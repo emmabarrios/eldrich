@@ -16,9 +16,9 @@ public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager instance;
 
-    public FirebaseUser user;
+    public static FirebaseUser user;
 
-    public string userId;
+    public static string userId;
 
     public DatabaseReference dbReference;
 
@@ -75,7 +75,7 @@ public class DatabaseManager : MonoBehaviour
             tempWeaponItems.RemoveAll(s => s == "Sword 1");
 
             User newUser = new User {
-                userId = this.user.UserId,
+                userId = user.UserId,
                 weaponItems = tempWeaponItems,
                 quickItems = tempQuickItems,
                 loggedDays = tempLoggedDays,
@@ -100,7 +100,7 @@ public class DatabaseManager : MonoBehaviour
 
     public void InitializeFirebaseDatabase() {
         user = AuthManager.instance.GetFirebaseUser();
-        userId = AuthManager.instance.GetFirebaseUserId();
+        userId = user.UserId;
 
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
             FirebaseApp app = FirebaseApp.DefaultInstance;
@@ -117,7 +117,7 @@ public class DatabaseManager : MonoBehaviour
 
     public void ResetUserData() {
         User newUser = new User {
-            userId = this.user.UserId,
+            userId = user.UserId,
             weaponItems = null,
             quickItems = null,
             loggedDays = null,
@@ -145,21 +145,43 @@ public class DatabaseManager : MonoBehaviour
 
         // Check which task completed
         if (completedTask == tsk) {
-            if(!tsk.IsFaulted || !tsk.IsCanceled) {
-                this.user = null;
+            if (!tsk.IsFaulted || !tsk.IsCanceled) {
+                user = null;
                 return true;
             }
         }
 
         return false;
     }
-   
+
+    // TEST LATER 
+    //public async Task<bool> PerformFirebaseOperation(Task tsk) {
+
+    //    CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+    //    CancellationToken token = cts.Token;
+
+    //    Task _tsk = tsk;
+
+    //    // Use Task.WhenAny to wait for either tsk or a delay
+    //    var completedTask = await Task.WhenAny(tsk, Task.Delay(Timeout.Infinite, token));
+
+    //    // Check which task completed
+    //    if (completedTask == tsk) {
+    //        if (!tsk.IsFaulted || !tsk.IsCanceled) {
+    //            return true;
+    //        }
+    //    }
+
+    //    return false;
+    //}
+
 
     public void LoadUserData() {
         // Load references
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-        PlayerStatsManager statsManager = PlayerStatsManager.instance;
-        GeneralInventory inventory = GeneralInventory.instance;
+        //PlayerStatsManager statsManager = PlayerStatsManager.instance;
+        //GeneralInventory inventory = GeneralInventory.instance;
+
         userId = AuthManager.instance.GetFirebaseUserId();
 
         if (userId != "") {

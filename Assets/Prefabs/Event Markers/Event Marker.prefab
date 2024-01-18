@@ -81,8 +81,9 @@ MonoBehaviour:
   amplitude: 0.5
   frequencey: 0.5
   moveRange: 2
-  eventScriptableObject: {fileID: 11400000, guid: 34b6e6cc032003248a3779035bde4f36, type: 2}
+  eventScriptableObject: {fileID: 11400000, guid: d67424352e8cddd4283f25bf2e5ddcf3, type: 2}
   markerObject: {fileID: 0}
+  eventType: 1
 --- !u!65 &7897381172237037291
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -98,7 +99,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

@@ -6,17 +6,16 @@ using UnityEngine.EventSystems;
 //using Mapbox.Utils;
 
 public class EventMarker : MonoBehaviour, IPointerClickHandler {
-    [SerializeField] private float rotationSpeed = 50f;
-    [SerializeField] private float amplitude = 2.0f;
-    [SerializeField] private float frequencey = 0.50f;
-    [SerializeField] private float moveRange = 15f;
 
+    
     [SerializeField] private WorldEvent eventScriptableObject;
 
     [SerializeField] private GameObject markerObject;
 
     public Vector3 markerLocationId { get; private set; }
 
+    [SerializeField]
+    private EventType eventType;
 
     //LocationStatus playerLocation;
     //public Vector2d eventPos;
@@ -35,29 +34,16 @@ public class EventMarker : MonoBehaviour, IPointerClickHandler {
         //GameManager.instance.OnCombatEventFinished += DestroyAfterCombatEvent;
     }
 
-    void Update()
-    {
-        //FloatAndRotatePointer();
-    }
-
-    private void FloatAndRotatePointer() {
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-        transform.position = new Vector3(transform.position.x, (Mathf.Sin(Time.fixedTime * Mathf.PI * frequencey) * amplitude) + moveRange, transform.position.z);
-    }
-
-    //private void OnMouseUp() {
-    //    if (!EventSystem.current.IsPointerOverGameObject()){
-    //        if (GameObject.Find("Canvas").transform.GetChild(0).gameObject.activeSelf == false) {
-    //            GameManager.instance.LoadEventProperties(this.eventScriptableObject, this.gameObject);
-    //        }
-    //        GameObject.Find("Canvas").GetComponent<OverworldUIManager>().DisplayStartEventPanel();
-    //    }
-    //}
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (GameObject.Find("Canvas").transform.GetChild(0).gameObject.activeSelf == false) {
+
+        if (eventType == EventType.battle) {
+            GameObject.Find("Canvas").GetComponent<OverworldUIManager>().DisplayStartEventPanel();
             GameManager.instance.LoadEventProperties(this.eventScriptableObject, this.gameObject);
+        } else {
+            GeneralInventory.instance.AddItem(eventScriptableObject._itemList[0]);
+            Destroy(this.gameObject);
         }
-        GameObject.Find("Canvas").GetComponent<OverworldUIManager>().DisplayStartEventPanel();
+
     }
 }
