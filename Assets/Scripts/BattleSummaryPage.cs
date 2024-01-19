@@ -22,7 +22,7 @@ public class BattleSummaryPage : MonoBehaviour
 
             // Update text for dropped items
             foreach (Item item in itemlist) {
-                textArea.text += $"{item._name}.\n";
+                textArea.text += $"{item._name}\n";
             }
 
             textArea.text += "\n";

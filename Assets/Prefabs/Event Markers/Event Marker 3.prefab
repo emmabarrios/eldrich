@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldEventSO: {fileID: 11400000, guid: d654fe8ce5fd46d4dbdf6d639a6cbc00, type: 2}
-  visualInteractionEffect: {fileID: 2312591318274358134, guid: 77da29788f3010e4396994ea52057980, type: 3}
+  visualInteractionEffect: {fileID: 8680598818964007281, guid: dcd90c4976197424b9958a7c54b6bb8c, type: 3}
   animated: 1
   rotationSpeed: 50
   amplitude: 0.5

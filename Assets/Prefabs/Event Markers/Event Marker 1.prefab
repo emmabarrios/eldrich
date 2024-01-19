@@ -78,8 +78,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldEventSO: {fileID: 11400000, guid: 3b84f44b59329f04a8df76504b6972fb, type: 2}
-  pinObject: {fileID: 0}
-  eventType: 0
+  animated: 0
+  rotationSpeed: 50
+  amplitude: 2
+  frequencey: 0.5
+  moveRange: 15
 --- !u!65 &7897381172237037291
 BoxCollider:
   m_ObjectHideFlags: 0

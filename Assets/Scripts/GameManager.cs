@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Threading.Tasks;
+using System.Threading;
 
 public class GameManager : MonoBehaviour
 {
@@ -69,6 +71,16 @@ public class GameManager : MonoBehaviour
 
     [Header("Volumen Settings")]
     public float globalVolume = 1.0f; // Default volume is 100%
+    public float GlobalVolume {
+        get { return globalVolume; }
+        set {
+            globalVolume = Mathf.Clamp01(value); // Ensure volume is between 0 and 1
+            UpdateAllAudioSources();
+        }
+    }
+
+    [Header("Map loading threshold")]
+    public int allowedSecconds = 10;
 
     private void Awake() {
 
@@ -82,7 +94,6 @@ public class GameManager : MonoBehaviour
         state = GameStates.Wait;
 
     }
-
 
 
     private void Update() {
@@ -121,19 +132,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+    //private void OnApplicationPause(bool pauseStatus) {
+    //    if (pauseStatus) {
+    //        // The application is paused
+    //        DatabaseManager.instance.SaveGame();
+    //    }
+    //}
 
-    private void OnApplicationPause(bool pauseStatus) {
-        if (pauseStatus) {
-            // The application is paused
-            DatabaseManager.instance.SaveGame();
-        }
-    }
-
-    private void OnApplicationQuit() {
-        // The application is being closed
-        DatabaseManager.instance.SaveGame();
-    }
+    //private void OnApplicationQuit() {
+    //    // The application is being closed
+    //    DatabaseManager.instance.SaveGame();
+    //}
 
     public void EndCombatSequence(bool wasEnemyDefeated) {
         
@@ -156,23 +165,43 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = (int)limits;
 
-        //PlayOverworldBackgroundAudio();
+        // Block screen with loading panel
+        //LoadingPanel.instance.ShowLoadingScreen();
 
-        LoadUserData_();
-        //DatabaseManager.instance.LoadUserData();
+        LoadUserData();
+
+        LoadingPanel.instance.ShowLoadingScreen();
+        StartCoroutine(WaitForMapTilesCoroutine());
+
+        //StartCoroutine(WaitForMapTilesCoroutine());
+        // If everything was loaded, here the panel will hide
 
         SwitchBackgroundTrack(overworldAudio);
 
     }
 
-    public async void LoadUserData_() {
-        LoadingPanel.instance.ShowLoadingScreen();
-        bool wasOperationSuccessful = await DatabaseManager.instance.LoadUserData_();
 
-        if (!wasOperationSuccessful) {
-            GameObject.Find("Canvas").GetComponent<OverworldUIManager>().DisplayErrorLoadingPanel();
+    public async void LoadUserData() {
+
+        bool userDataLoadedSuccessfully = await DatabaseManager.instance.LoadUserData_();
+
+        if (!userDataLoadedSuccessfully) {
+            GameObject.Find("Canvas").GetComponent<OverworldUIManager>().ToggleErrorLoadingPanel();
         } 
 
+    }
+
+    private IEnumerator WaitForMapTilesCoroutine() {
+        int mapTiles = 0;
+        int seccondsPassed = 0;
+        while (mapTiles <= 1) {
+            seccondsPassed++;
+            mapTiles = GameObject.Find("Map").transform.childCount;
+            if (seccondsPassed>5) {
+                LoadingPanel.instance.UpdateLoadingMessage("Map loading is taking longer than expected...");
+            }
+            yield return new WaitForSeconds(1);
+        }
         LoadingPanel.instance.HideLoadingScreen();
     }
 
@@ -217,32 +246,6 @@ public class GameManager : MonoBehaviour
         state = GameStates.CombatOutro;
     }
 
-    private IEnumerator LoadCombatScene() {
-       
-        yield return LoadCharacter(enemy, GameObject.Find("Enemy Spawn Point").transform);
-        Debug.Log("Enemy spawned");
-
-        yield return LoadCharacter(player, GameObject.Find("Player Spawn Point").transform);
-        Debug.Log("Player spawned");
-
-        yield return new WaitUntil(EnemyComponentIsNotNull);
-        yield return new WaitUntil(PlayerComponentIsNotNull);
-
-        bool EnemyComponentIsNotNull() {
-            return GameObject.FindGameObjectWithTag("Enemy").GetComponent<Enemy>() != null;
-        }
-        bool PlayerComponentIsNotNull() {
-            return GameObject.FindGameObjectWithTag("Player").GetComponent<Player>() != null;
-        }
-
-        ToggleCombatUI();
-
-        InitializePlayer();
-
-        state = GameStates.CombatIntro;
-
-    }
-
     private IEnumerator LoadCharacter(GameObject obj, Transform tsfm) {
         GameObject loadedCharacter = Instantiate(obj, tsfm.position, tsfm.rotation);
 
@@ -271,30 +274,6 @@ public class GameManager : MonoBehaviour
         return clickedEvent._exp;
     }
     
-    public void PlayBattleBackgroundAudio() {
-        // Check if the audio source is not playing to avoid overlapping
-        if (!audioSource.isPlaying) {
-            audioSource.clip = battleAudio;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
-    }
-
-    public void PlayOverworldBackgroundAudio() {
-        // Check if the audio source is not playing to avoid overlapping
-        if (!audioSource.isPlaying) {
-            audioSource.clip = overworldAudio;
-            audioSource.loop = true;
-            audioSource.Play();
-        }
-    }
-
-    private void PlayBackgroundMusic() {
-        if (!audioSource.isPlaying) {
-            audioSource.Play();
-        }
-    }
-
     public void StopBackgroundAudioLoop() {
         audioSource.Stop();
     }
@@ -307,13 +286,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public float GlobalVolume {
-        get { return globalVolume; }
-        set {
-            globalVolume = Mathf.Clamp01(value); // Ensure volume is between 0 and 1
-            UpdateAllAudioSources();
-        }
-    }
+   
 
     private void UpdateAllAudioSources() {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
@@ -328,6 +301,8 @@ public class GameManager : MonoBehaviour
 
         switch (sceneName) {
             case("Overworld"):
+                LoadingPanel.instance.ShowLoadingScreen();
+                StartCoroutine(WaitForMapTilesCoroutine());
 
                 UpdateAllAudioSources();
 
@@ -343,6 +318,8 @@ public class GameManager : MonoBehaviour
                 }
 
                 state = GameStates.Overworld;
+
+                DatabaseManager.instance.SaveGame();
 
                 break;
             case ("MainScene"):

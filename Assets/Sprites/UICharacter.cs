@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UICharacter : MonoBehaviour
 {
+
     public Transform pivot;
     public void SpawnWeaponOnPivot(WeaponItem weaponItem) {
         if (pivot.childCount == 0) {

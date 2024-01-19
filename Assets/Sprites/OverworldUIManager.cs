@@ -17,8 +17,8 @@ public class OverworldUIManager : MonoBehaviour
         eventUiPanel.SetActive(true);
     }
 
-    public void DisplayErrorLoadingPanel() {
-        errorLoadingPanel.SetActive(true);
+    public void ToggleErrorLoadingPanel() {
+        errorLoadingPanel.SetActive(!errorLoadingPanel.activeSelf);
     }
 
     public void UpdateStatsUIContent() {

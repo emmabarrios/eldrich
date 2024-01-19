@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class LoadingPanel : MonoBehaviour
 {
     // Start is called before the first frame update
     public static LoadingPanel instance;
+    
 
-    [SerializeField]
-    private GameObject loadingScreenPanel;
+    [SerializeField] private GameObject loadingScreenPanel;
+    [SerializeField] private TextMeshProUGUI loadingMessage;
 
     private void Awake() {
         if (instance == null) {
@@ -27,7 +29,12 @@ public class LoadingPanel : MonoBehaviour
     }
     public void HideLoadingScreen() {
         if (loadingScreenPanel.activeSelf) {
+            loadingMessage.text = "";
             loadingScreenPanel.SetActive(false);
         }
+    }
+
+    public void UpdateLoadingMessage(string msg) {
+        loadingMessage.text = msg;
     }
 }

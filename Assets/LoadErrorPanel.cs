@@ -9,7 +9,7 @@ public class LoadErrorPanel : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button closeAppButton;
 
     private void OnEnable() {
-        retryButton.onClick.AddListener(() => GameManager.instance.LoadUserData_());
+        retryButton.onClick.AddListener(() => GameManager.instance.LoadUserData());
         closeAppButton.onClick.AddListener(() => Application.Quit());
     }
 

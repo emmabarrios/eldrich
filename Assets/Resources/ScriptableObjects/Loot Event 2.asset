@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemy: {fileID: 0}
   _pinObject: {fileID: 3842816125738080115, guid: 5a5d7efb97759f74bb6e91e3b758a9d7, type: 3}
-  _loot:
-  - {fileID: 11400000, guid: 9fc246521a9ab644d80f959f3111b2c4, type: 2}
+  _lootPickupFX: {fileID: 8680598818964007281, guid: dcd90c4976197424b9958a7c54b6bb8c, type: 3}
   _exp: 3
   _eventType: 1
+  _loot:
+  - {fileID: 11400000, guid: 9fc246521a9ab644d80f959f3111b2c4, type: 2}

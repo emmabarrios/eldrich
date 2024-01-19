@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 public class EventMarker : MonoBehaviour, IPointerClickHandler {
 
     [SerializeField] private WorldEvent worldEventSO;
-    [SerializeField] private GameObject visualInteractionEffect;
 
     public Vector3 markerLocationId { get; private set; }
     
@@ -35,7 +34,8 @@ public class EventMarker : MonoBehaviour, IPointerClickHandler {
             GameManager.instance.LoadEventProperties(this.worldEventSO, this.gameObject);
         } else {
             GeneralInventory.instance.AddItem(worldEventSO._loot[0]);
-            Instantiate(visualInteractionEffect, this.transform.position, Quaternion.identity);
+            Instantiate(worldEventSO._lootPickupFX, this.transform.position, Quaternion.identity);
+            DatabaseManager.instance.SaveGame();
             Destroy(this.gameObject);
         }
 
