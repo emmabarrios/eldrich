@@ -32,12 +32,12 @@ public class ScriptableObjectManager : MonoBehaviour {
 
     // Retrieve a Scriptable Object by name
     public Item GetScriptableObject(string name) {
-        if (name!="") {
+        if (name!="" && name != null) {
             if (scriptableObjectsDictionary.TryGetValue(name, out Item so)) {
                 return so;
             }
         }
-        
+
         Debug.LogWarning($"Scriptable Object with name '{name}' not found.");
         return null;
     }

@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7897381172237037293}
   - component: {fileID: 7897381172237037291}
   m_Layer: 0
-  m_Name: Event Marker
+  m_Name: Event Marker 3
   m_TagString: Marker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1d95759035aa0147a4c52aa5f8e68f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldEventSO: {fileID: 11400000, guid: d67424352e8cddd4283f25bf2e5ddcf3, type: 2}
+  worldEventSO: {fileID: 11400000, guid: d654fe8ce5fd46d4dbdf6d639a6cbc00, type: 2}
   visualInteractionEffect: {fileID: 2312591318274358134, guid: 77da29788f3010e4396994ea52057980, type: 3}
   animated: 1
   rotationSpeed: 50

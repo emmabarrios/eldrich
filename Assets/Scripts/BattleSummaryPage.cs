@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -7,7 +6,8 @@ public class BattleSummaryPage : MonoBehaviour
 {
     [SerializeField] private Text textArea;
 
-    UnityEngine.UI.Button button;
+    private UnityEngine.UI.Button button;
+
     private void OnEnable() {
         button = GetComponentInChildren<UnityEngine.UI.Button>();
         button.onClick.AddListener(() => Loader.Load(Loader.Scene.Overworld));

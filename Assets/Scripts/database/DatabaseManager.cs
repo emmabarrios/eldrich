@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
+using System.Linq;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -54,8 +55,8 @@ public class DatabaseManager : MonoBehaviour
             List<string> tempWeaponItems = new List<string>();
             List<string> tempLoggedDays = new List<string>();
 
-            tempQuickItems = inventory.GetQuickItemsAsStrings();
-            tempWeaponItems = inventory.GetWeaponItemsAsStrings();
+            tempQuickItems = inventory.GetQuickItemsAsStrings().Where(item => !string.IsNullOrEmpty(item)).ToList();
+            tempWeaponItems = inventory.GetWeaponItemsAsStrings().Where(item => !string.IsNullOrEmpty(item)).ToList();
             tempLoggedDays = loadedUser.loggedDays;
 
             // Gather items from both combat and general inventory
@@ -175,12 +176,68 @@ public class DatabaseManager : MonoBehaviour
     //    return false;
     //}
 
+    public async Task<bool> LoadUserData_() {
+        CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        CancellationToken token = cts.Token;
+
+        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+        userId = AuthManager.instance.GetFirebaseUserId();
+
+        Task<DataSnapshot> tsk = dbReference.Child("users").Child(userId).GetValueAsync();
+
+        var completedTask = await Task.WhenAny(tsk, Task.Delay(Timeout.Infinite, token));
+
+        if (userId != "") {
+            if (completedTask == tsk) {
+
+                // There was a problem with the request
+                if (completedTask.IsFaulted) {
+                    return false;
+                }
+                // Parse the JSON data into a User object
+                DataSnapshot snapshot = tsk.Result;
+                if (snapshot.Exists) {
+                    string json = snapshot.GetRawJsonValue();
+                    User temUser = new User();
+
+                    temUser = JsonUtility.FromJson<User>(json);
+
+                    this.loadedUser = temUser;
+
+                    Debug.Log(temUser.quickItems);
+
+                    // Check if more than two days has passed to nerf the players stats
+
+                    if (!IsCurrentDay(loadedUser.lastLoggedDay)) {
+                        DateTime lastLoggedDate = DateTime.ParseExact(loadedUser.lastLoggedDay, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                        DateTime currentDay = DateTime.Today;
+
+                        TimeSpan difference = currentDay - lastLoggedDate;
+
+                        if (difference.Days >= 2) {
+                            loadedUser.stats.vitality = (loadedUser.stats.vitality > 1) ? loadedUser.stats.vitality -= 1 : loadedUser.stats.vitality;
+                            loadedUser.stats.endurance = (loadedUser.stats.endurance > 1) ? loadedUser.stats.endurance -= 1 : loadedUser.stats.endurance;
+                            loadedUser.stats.strength = (loadedUser.stats.strength > 1) ? loadedUser.stats.strength -= 1 : loadedUser.stats.strength;
+                        }
+                    }
+
+                    AssignLoadedUserData(loadedUser);
+                }
+                return true;
+            } else {
+                // Response time ran out
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+        
 
     public void LoadUserData() {
         // Load references
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
-        //PlayerStatsManager statsManager = PlayerStatsManager.instance;
-        //GeneralInventory inventory = GeneralInventory.instance;
 
         userId = AuthManager.instance.GetFirebaseUserId();
 
@@ -239,16 +296,16 @@ public class DatabaseManager : MonoBehaviour
     private void AssignLoadedUserData(User loadedUser) {
 
         foreach (var weaponItem in loadedUser.weaponItems) {
-            if (weaponItem != null || weaponItem != "") {
-                Debug.Log("Weapon Item: " + weaponItem);
+            if (weaponItem != null && weaponItem != "") {
+                Debug.LogWarning("Weapon Item: " + weaponItem);
                 GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
             }
 
         }
 
         foreach (var quickItem in loadedUser.quickItems) {
-            if (quickItem != null || quickItem!="") {
-                Debug.Log("Quick Item: " + quickItem);
+            if (quickItem != null && quickItem != "") {
+                Debug.LogWarning("Quick Item: " + quickItem);
                 GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(quickItem));
             }
         }

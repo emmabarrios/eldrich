@@ -9,7 +9,6 @@ public class RandomPrefabSpawner : MonoBehaviour
 
     public List<GameObject> prefabList;  // List of prefabs to spawn
     public List<GameObject> lastInstantiatedPrefabList = new List<GameObject>();  // List of prefabs to spawn
-    //public List<GameObject> instantiatedPrefabs;
     public float spawnRadius = 10f;  // Radius around the player to spawn prefabs
     public int numberOfPrefabs = 5;  // Number of prefabs to spawn
     public float minDistanceBetweenObjects = 2f;
@@ -70,20 +69,9 @@ public class RandomPrefabSpawner : MonoBehaviour
                 spawnTimer.ResetTimer();
             }
         }
-
-        //if (spawnTimer.IsTimerOut()) {
-        //    RemoveRemainingInstances();
-        //    SpawnRandomPrefabs();
-        //    ParentLastPrefabInstances();
-        //    spawnTimer.ResetTimer();
-        //}
-
     }
 
     public void SpawnRandomPrefabs() {
-
-        // Get the player's position
-        //Vector3 playerPosition = transform.position;
 
         Vector3 playerPosition = playerPin.position;
 

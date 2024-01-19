@@ -25,20 +25,6 @@ public class GeneralInventory : MonoBehaviour
         SortItemList(storedWeaponItemList);
     }
 
-    //public void StoreItems(List<QuickItem> items, List<WeaponItem> weapons = null) {
-    //    foreach (QuickItem item in items) {
-    //        storedQuickItemList.Add(item);
-    //    }
-
-    //    if (weapons!=null) {
-    //        foreach (WeaponItem item in weapons) {
-    //            storedWeaponItemList.Add(item);
-    //        }
-    //    }
-
-    //    SortItemList(storedQuickItemList);
-    //}
-
     public void StoreItems(List<Item> loot) {
         foreach (Item item in loot) {
             if (item is QuickItem) {
@@ -47,8 +33,7 @@ public class GeneralInventory : MonoBehaviour
                 storedWeaponItemList.Add((WeaponItem)item);
             }
         }
-
-        SortItemList(storedQuickItemList);
+        SortItems();
     } 
 
     public List<QuickItem> GetQuickItems() {

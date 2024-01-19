@@ -8,27 +8,18 @@ using Mapbox.Unity.Location;
 public class OverworldUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject eventUiPanel;
-    //[SerializeField] private GameObject eventPanelUserNotInRange;
-    public bool isEventUiPanelActive;
+    [SerializeField] private GameObject errorLoadingPanel;
+
 
 
     // Start is called before the first frame update
     public void DisplayStartEventPanel() {
-        //if (isEventUiPanelActive == false) {
-        //    eventUiPanel.SetActive(true);
-        //    isEventUiPanelActive = true;
-        //}
-
         eventUiPanel.SetActive(true);
     }
 
-    //public void DisplayUserNotInRangeEventPanel() {
-    //    if (isEventUiPanelActive == false) {
-    //        eventPanelUserNotInRange.SetActive(true);
-    //        isEventUiPanelActive = true;
-    //    }
-    //}
-
+    public void DisplayErrorLoadingPanel() {
+        errorLoadingPanel.SetActive(true);
+    }
 
     public void UpdateStatsUIContent() {
 

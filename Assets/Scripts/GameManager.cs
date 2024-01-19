@@ -11,17 +11,13 @@ public class GameManager : MonoBehaviour
     [Header("Combat Scene Characters")]
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject enemy;
+    private bool isEnemyPlaced;
 
     [SerializeField] private WorldEvent clickedEvent;
     [SerializeField] private Vector3 lastClickedEventMarkerLocationId;
 
     // Event to destroy object based on battle results
     public Action<string> OnCombatEventFinished;
-
-
-    private bool isOnCombatScene = false;
-    private bool isOnOverworldScene = false;
-    //private bool combatSceneLoaded = false;
 
     public enum GameStates {
         WaitingToStart,
@@ -87,70 +83,15 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+
     private void Update() {
-
-        string sceneName = SceneManager.GetActiveScene().name;
-
-        switch (sceneName) {
-
-            case "MainScene":
-                if (isOnCombatScene == false) {
-
-                    StopBackgroundAudioLoop();
-
-                    UpdateAllAudioSources();
-
-                    isOnCombatScene = true;
-                    isOnOverworldScene = false;
-
-                    RandomPrefabSpawner.instance.ToggleInstances();
-                    state = GameStates.CombatIntro;
-
-                    // Instantiate enemy on place
-                    Instantiate(enemy, GameObject.Find("EnemySpawnPoint").transform.position, Quaternion.identity);
-                    PlayBattleBackgroundAudio();
-
-                }
-                break;
-            
-            case "Overworld":
-                if (isOnOverworldScene == false) {
-                    StopBackgroundAudioLoop();
-
-                    UpdateAllAudioSources();
-                    
-                    isOnOverworldScene = true;
-                    isOnCombatScene = false;
-                    state = GameStates.LoadingWorldAssets;
-
-                    PlayOverworldBackgroundAudio();
-                    //UpdateOverworldUI();
-                }
-                break;
-
-            default:
-                break;
-        }
-
-        //if (combatSceneLoaded == false) {
-        //    if (SceneManager.GetActiveScene().name.ToString() == "MainScene") {
-        //        combatSceneLoaded = true;
-        //        state = GameStates.CombatIntro;
-        //    }
-        //}
-       
-
-        // State management
+             
         switch (state) {
-            //case GameStates.WaitingToStart:
-            //    waitingToStartTimer -= Time.deltaTime;
-            //    if (waitingToStartTimer < 0) {
-            //        state = GameStates.CombatIntro;
-            //    }
-            //    break;
 
             case GameStates.CombatIntro:
-                countdownToStartCombatTimer -= Time.deltaTime;
+
+               countdownToStartCombatTimer -= Time.deltaTime;
 
                 if (countdownToStartCombatTimer <= 0) {
                     combatLimitTimer = combatLimitTimerMax;
@@ -160,11 +101,7 @@ public class GameManager : MonoBehaviour
 
                     // Initialize player controller
                     GameObject.Find("Player").GetComponent<Controller>().LoadPlayerAttackSettings();
-
-
                     state = GameStates.Combat;
-                    //ToggleCombatUI();
-                    //InitializePlayer();
                 }
                 break;
 
@@ -174,63 +111,17 @@ public class GameManager : MonoBehaviour
 
                 if (combatLimitTimer < 0) {
                     EndCombatSequence(false);
+                    state = GameStates.Wait;
                 }
                 break;
-
-            case GameStates.CombatOutro:
-
-                //combatOutroTimer -= Time.deltaTime;
-                //if (combatOutroTimer < 0) {
-                //    ToggleBattleResultsUI();
-                //    state = GameStates.Wait;
-                //}
-
-                break;
-
-            //case GameStates.LoadingCombatAssets:
-
-            //    // Load the enemy game object
-            //    // Load the player game object
-            //    // Load player stats
-            //    // Initialize combat UI carousell
-            //    // Change state to combat intro
-
-            //    //StartCoroutine(LoadCombatScene());
-
-            //    if (!combatSceneLoaded) {
-            //        StartCoroutine(LoadCombatScene());
-            //        combatSceneLoaded = true;
-            //    }
-
-            //    break;
 
             case GameStates.Wait:
                 break;
 
-            case GameStates.Overworld:
-                //if (playerWonLastEvent) {
-                //    Debug.Log(clickedEvent.name);
-                //} else {
-                //    Debug.Log("Player lost");
-                //}
-                break;
-
-            case GameStates.LoadingWorldAssets:
-                if (lastClickedEventMarkerLocationId != Vector3.zero) {
-                    if (wasEnemyDefeated) {
-                        RandomPrefabSpawner.instance.ToggleInstances(lastClickedEventMarkerLocationId);
-                    } else {
-                        RandomPrefabSpawner.instance.ToggleInstances();
-                    }
-                    //StopBackgroundAudioLoop();
-                    
-                }
-
-                state = GameStates.Overworld;
-                break;
         }
-        //Debug.Log(state);
     }
+
+    
 
     private void OnApplicationPause(bool pauseStatus) {
         if (pauseStatus) {
@@ -247,32 +138,42 @@ public class GameManager : MonoBehaviour
     public void EndCombatSequence(bool wasEnemyDefeated) {
         
         this.wasEnemyDefeated = wasEnemyDefeated;
-        Debug.Log(this.wasEnemyDefeated);
         ToggleCombatUI();
         ToggleBattleResultsUI(wasEnemyDefeated);
 
         // if wasEnemyDefeated, send exp to StatsManager and items to GeneralInventory
         if (wasEnemyDefeated) {
-            //GeneralInventory.instance.StoreItems(GetQuickItemList(), GeWeaponItemList());
-
             GeneralInventory.instance.StoreItems(GetLoot());
-
-            GeneralInventory.instance.SortItems();
-
-            //PlayerStatsManager.instance.UpdateExperience(GetCombatExperience());
             PlayerStatsManager.instance.EarnedExperience += GetCombatExperience();
         }
-
-        state = GameStates.CombatOutro;
     }
 
     void Start()
     {
-        Application.targetFrameRate = (int)limits;
         audioSource = GetComponent<AudioSource>();
 
-        DatabaseManager.instance.LoadUserData();
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
+        Application.targetFrameRate = (int)limits;
+
+        //PlayOverworldBackgroundAudio();
+
+        LoadUserData_();
+        //DatabaseManager.instance.LoadUserData();
+
+        SwitchBackgroundTrack(overworldAudio);
+
+    }
+
+    public async void LoadUserData_() {
+        LoadingPanel.instance.ShowLoadingScreen();
+        bool wasOperationSuccessful = await DatabaseManager.instance.LoadUserData_();
+
+        if (!wasOperationSuccessful) {
+            GameObject.Find("Canvas").GetComponent<OverworldUIManager>().DisplayErrorLoadingPanel();
+        } 
+
+        LoadingPanel.instance.HideLoadingScreen();
     }
 
     public void InitializePlayer() {
@@ -294,6 +195,7 @@ public class GameManager : MonoBehaviour
         playerCombatUI.gameObject.SetActive(!playerCombatUI.gameObject.activeSelf);
         enemyCombatUI.gameObject.SetActive(!enemyCombatUI.gameObject.activeSelf);
     } 
+    
     private void ToggleBattleResultsUI(bool combatResult) {
         Transform battleResultsVictoryUI = GameObject.Find("Canvas").transform.GetChild(1);
         Transform battleResultsDefeatUI = GameObject.Find("Canvas").transform.GetChild(2);
@@ -361,13 +263,6 @@ public class GameManager : MonoBehaviour
         lastClickedEventMarkerLocationId = eventMarker.GetComponent<EventMarker>().markerLocationId;
     }
 
-    //public List<QuickItem> GetQuickItemList() {
-    //    return this.clickedEvent._itemList;
-    //}
-    //public List<WeaponItem> GeWeaponItemList() {
-    //    return this.clickedEvent._weaponItemList;
-    //}
-
     public List<Item> GetLoot() {
         return this.clickedEvent._loot;
     }
@@ -394,9 +289,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void PlayBackgroundMusic() {
+        if (!audioSource.isPlaying) {
+            audioSource.Play();
+        }
+    }
 
     public void StopBackgroundAudioLoop() {
         audioSource.Stop();
+    }
+
+    private void SwitchBackgroundTrack(AudioClip clip) {
+        if (audioSource.clip != clip || !audioSource.isPlaying) {
+            audioSource.Stop(); // Stop the currently playing track
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
     }
 
     public float GlobalVolume {
@@ -412,6 +320,46 @@ public class GameManager : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources) {
             audioSource.volume = globalVolume;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        string sceneName = scene.name;
+
+        switch (sceneName) {
+            case("Overworld"):
+
+                UpdateAllAudioSources();
+
+                SwitchBackgroundTrack(overworldAudio);
+
+                // Handle prefab spawning
+                if (lastClickedEventMarkerLocationId != Vector3.zero) {
+                    if (wasEnemyDefeated) {
+                        RandomPrefabSpawner.instance.ToggleInstances(lastClickedEventMarkerLocationId);
+                    } else {
+                        RandomPrefabSpawner.instance.ToggleInstances();
+                    }
+                }
+
+                state = GameStates.Overworld;
+
+                break;
+            case ("MainScene"):
+                RandomPrefabSpawner.instance.ToggleInstances();
+
+                UpdateAllAudioSources();
+
+                SwitchBackgroundTrack(battleAudio);
+
+                Instantiate(enemy, GameObject.Find("EnemySpawnPoint").transform.position, Quaternion.identity);
+
+                state = GameStates.CombatIntro;
+
+                break;
+            default:
+
+                break;
         }
     }
 }
