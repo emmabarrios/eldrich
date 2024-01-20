@@ -81,6 +81,7 @@ public class DatabaseManager : MonoBehaviour
                 quickItems = tempQuickItems,
                 loggedDays = tempLoggedDays,
                 exp = statsManager.EarnedExperience,
+                skillPointCost = statsManager.SkillPointCost,
                 totalTraveledDistance = loadedUser.totalTraveledDistance + TraveledDistanceTracker.instance.CurrentTraveledDistance,
                 totalDaysLogged = (IsCurrentDay(loadedUser.lastLoggedDay)) ? loadedUser.totalDaysLogged : loadedUser.totalDaysLogged + 1,
                 lastLoggedDay = DateTime.Today.ToString("yyyy-MM-dd"),
@@ -297,7 +298,7 @@ public class DatabaseManager : MonoBehaviour
 
         foreach (var weaponItem in loadedUser.weaponItems) {
             if (weaponItem != null && weaponItem != "") {
-                Debug.LogWarning("Weapon Item: " + weaponItem);
+                //Debug.LogWarning("Weapon Item: " + weaponItem);
                 GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
             }
 
@@ -305,7 +306,7 @@ public class DatabaseManager : MonoBehaviour
 
         foreach (var quickItem in loadedUser.quickItems) {
             if (quickItem != null && quickItem != "") {
-                Debug.LogWarning("Quick Item: " + quickItem);
+                //Debug.LogWarning("Quick Item: " + quickItem);
                 GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(quickItem));
             }
         }

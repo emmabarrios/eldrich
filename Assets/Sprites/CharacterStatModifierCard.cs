@@ -18,7 +18,7 @@ public class CharacterStatModifierCard : MonoBehaviour
     public int LastValue { get { return lastValue; } set { lastValue = value; } }
     public int CurrentValue { get { return currentValue; } set { currentValue = value; } }
 
-    private OverworldUIManager overworldUIManager;
+    private StatsPanel statsPanel;
 
     public enum CardStat {
         Vitality,
@@ -30,8 +30,6 @@ public class CharacterStatModifierCard : MonoBehaviour
 
     private void OnEnable() {
         cardTitle.text = cardStat.ToString();
-        addButton.onClick.AddListener(() => AddLevel());
-        subtractButton.onClick.AddListener(() => SubtractLevel());
 
         LastValue = PlayerStatsManager.instance.GetLastValue(cardStat);
 
@@ -39,7 +37,7 @@ public class CharacterStatModifierCard : MonoBehaviour
 
         currentValueText.text = CurrentValue.ToString();
 
-        overworldUIManager = GameObject.Find("Canvas").GetComponent<OverworldUIManager>();
+        statsPanel = GameObject.Find("Stats Panel").GetComponentInChildren<StatsPanel>();
     }
 
 
@@ -58,8 +56,10 @@ public class CharacterStatModifierCard : MonoBehaviour
 
             PlayerStatsManager.instance.UpdateExperience(0);
             PlayerStatsManager.instance.UpdateLastStats();
+
+            statsPanel.UpdateUIpanel();
         }
-        overworldUIManager.UpdateStatsUIContent();
+        
     }
     
     public void SubtractLevel() {
@@ -69,21 +69,21 @@ public class CharacterStatModifierCard : MonoBehaviour
 
             currentValueText.text = CurrentValue.ToString();
 
-            addButton.interactable = true;
-
-            PlayerStatsManager.instance.EarnedExperience += PlayerStatsManager.instance.SkillPointCost;
             PlayerStatsManager.instance.SkillPointCost -= 1;
+            PlayerStatsManager.instance.EarnedExperience += PlayerStatsManager.instance.SkillPointCost;
 
             PlayerStatsManager.instance.UpdateStat(cardStat);
 
             PlayerStatsManager.instance.UpdateExperience(0);
             PlayerStatsManager.instance.UpdateLastStats();
+
+            statsPanel.UpdateUIpanel();
         }
-        overworldUIManager.UpdateStatsUIContent();
+        
     }
 
     public void SubmitValue() {
-        subtractButton.interactable = false;
+        //subtractButton.interactable = false;
 
         switch (cardStat) {
             case CardStat.Vitality:
@@ -102,4 +102,13 @@ public class CharacterStatModifierCard : MonoBehaviour
         LastValue = PlayerStatsManager.instance.GetLastValue(cardStat);
         CurrentValue = LastValue;
     }
+
+    public void ToggleAddButton(bool state) {
+        addButton.interactable = state;
+    }
+
+    public void ToggleSubtractButton(bool state) {
+        subtractButton.interactable = state;
+    }
+
 }

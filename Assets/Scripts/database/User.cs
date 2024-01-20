@@ -9,6 +9,7 @@ public class User
     public List<string> loggedDays;
     public int exp;
     public Stats stats;
+    public int skillPointCost;
     public double totalTraveledDistance;
     public int totalDaysLogged;
     public string lastLoggedDay;

@@ -369,26 +369,45 @@
 
 		}
 
-		//private double CalculateDistance(Vector2d from, Vector2d to) {
-		//	const double EarthRadius = 6371000; // in meters
-		//	double dLat = (to.x - from.x) * (Math.PI / 180.0);
-		//	double dLon = (to.y - from.y) * (Math.PI / 180.0);
-		//	double lat1 = from.x * (Math.PI / 180.0);
-		//	double lat2 = to.x * (Math.PI / 180.0);
+        //private double CalculateDistance(Vector2d from, Vector2d to) {
+        //    const double EarthRadius = 6371000; // in meters
+        //    double dLat = (to.x - from.x) * (Math.PI / 180.0);
+        //    double dLon = (to.y - from.y) * (Math.PI / 180.0);
+        //    double lat1 = from.x * (Math.PI / 180.0);
+        //    double lat2 = to.x * (Math.PI / 180.0);
 
-		//	double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-		//			   Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
-		//	double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        //    double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+        //               Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
+        //    double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
-		//	return EarthRadius * c;
-		//}
+        //    return EarthRadius * c;
+        //}
 
 		private double CalculateDistance(Vector2d from, Vector2d to) {
-			Vector3 fromVector = new Vector3((float)from.x, 0f, (float)from.y);
-			Vector3 toVector = new Vector3((float)to.x, 0f, (float)to.y);
+			const double EarthRadiusInMeters = 6371000; // Earth radius in meters
+			double dLat = (to.x - from.x) * (Math.PI / 180.0);
+			double dLon = (to.y - from.y) * (Math.PI / 180.0);
+			double lat1 = from.x * (Math.PI / 180.0);
+			double lat2 = to.x * (Math.PI / 180.0);
 
-			return Vector3.Distance(fromVector, toVector);
+			double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+					   Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
+			double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+			double distanceInMeters = EarthRadiusInMeters * c;
+
+			const double EarthRadiusInUnityUnits = 1000; // Earth radius in Unity units
+			double distanceInUnityUnits = distanceInMeters / EarthRadiusInUnityUnits;
+
+			return distanceInUnityUnits;
 		}
+
+		//private double CalculateDistance(Vector2d from, Vector2d to) {
+		//	Vector3 fromVector = new Vector3((float)from.x, 0f, (float)from.y);
+		//	Vector3 toVector = new Vector3((float)to.x, 0f, (float)to.y);
+
+		//	return Vector3.Distance(fromVector, toVector);
+		//}
 
 		/// <summary>
 		/// If GPS and network location are available use the newer/better one

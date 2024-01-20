@@ -56,20 +56,10 @@ public class PlayerStatsManager: MonoBehaviour
         }
     }
 
-    private void Start() {
-
-        if (skillPointCost == 0) {
-            skillPointCost = 5;
-        }
-
-        //locationProvider.OnDistanceChange += UpdateTraveledDistance;
-
-    }
 
     public void LoadPlayerStats(Player character) {
 
         weaponAttack = CombatInventory.instance.WeaponItemSO._damage;
-        //locationProvider = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>();
 
         character.Health = 100f + (vitality * 0.10f) + (strenght * 0.25f);
         character.Stamina = 100f + (endurance * 0.50f);
@@ -78,13 +68,8 @@ public class PlayerStatsManager: MonoBehaviour
 
         // Update Player attack cooldown values
         character.AttackCooldown += CombatInventory.instance.WeaponItemSO._attackCooldown;
-
-
     }
 
-    private void UpdateTraveledDistance(double distance) {
-        traveledDistance = distance;
-    }
     public void UpdateExperience(float exp) {
         earnedExp += exp;
         skillPoints = (int)Mathf.Floor(earnedExp / skillPointCost);
@@ -97,18 +82,17 @@ public class PlayerStatsManager: MonoBehaviour
 
         earnedExp = user.exp;
 
-        //traveledDistance = lastTraveledDistance;
+        if (user.skillPointCost == 0 ) {
+            SkillPointCost = 5;
+        } else {
+            SkillPointCost = user.skillPointCost;
+        }
 
         UpdateExperience(0);
-        UpdateLastStats();
 
+        UpdateLastStats();
     }
 
-    // MOVE THIS METHOD LATER TO THE UI MANAGER
-    //public void UpdateStatsOnDatabase() {
-    //    UpdateExperience(0);
-    //    UpdateLastStats();
-    //}
 
     public void UpdateLastStats() {
 
