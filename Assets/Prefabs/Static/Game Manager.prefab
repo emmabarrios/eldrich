@@ -56,10 +56,11 @@ MonoBehaviour:
   combatOutroTimer: 3
   limits: 30
   battleAudio: {fileID: 8300000, guid: 276c6826de1fb4d469da97e6882bb85d, type: 3}
-  overworldAudio: {fileID: 8300000, guid: d7d06dc0ddb0cf84b8b3feaa6827123b, type: 3}
+  overworldAudio: {fileID: 8300000, guid: 467ff29d7afe04a21b11d24c21bc679c, type: 3}
   entranceTime: 1
   wasEnemyDefeated: 0
   globalVolume: 1
+  allowedSecconds: 10
 --- !u!82 &761241565177866405
 AudioSource:
   m_ObjectHideFlags: 0
