@@ -102,17 +102,17 @@ public class PlayerStatsManager: MonoBehaviour
         Defense = (int)(10f + Mathf.Ceil(strenght * 1.50f) + Mathf.Ceil(vitality * 1.10f) + Mathf.Ceil(endurance * 1.10f));
     }
 
-    public int GetLastValue(CharacterStatModifierCard.CardStat cardStat) {
+    public int GetLastValue(CardStat cardStat) {
 
         int lastValue = 0;
         switch (cardStat) {
-            case CharacterStatModifierCard.CardStat.Vitality:
+            case CardStat.Vitality:
                 lastValue =  Vitality;
                 break;
-            case CharacterStatModifierCard.CardStat.Endurance:
+            case CardStat.Endurance:
                 lastValue = Endurance;
                 break;
-            case CharacterStatModifierCard.CardStat.Strenght:
+            case CardStat.Strenght:
                 lastValue = Strenght;
                 break;
             default:
@@ -122,15 +122,15 @@ public class PlayerStatsManager: MonoBehaviour
         return lastValue;
     }
 
-    public void UpdateStat(CharacterStatModifierCard.CardStat cardStat) {
+    public void UpdateStat(CardStat cardStat) {
         switch (cardStat) {
-            case CharacterStatModifierCard.CardStat.Vitality:
+            case CardStat.Vitality:
                 Vitality++;
                 break;
-            case CharacterStatModifierCard.CardStat.Endurance:
+            case CardStat.Endurance:
                 Endurance++;
                 break;
-            case CharacterStatModifierCard.CardStat.Strenght:
+            case CardStat.Strenght:
                 Strenght++;
                 break;
             default:

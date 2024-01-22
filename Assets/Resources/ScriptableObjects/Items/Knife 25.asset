@@ -15,13 +15,14 @@ MonoBehaviour:
   _name: Knife 25
   _description: Regular Knife
   _sprite: {fileID: 21300000, guid: 0dc4f5c030acc0a4a91ceadc27719f50, type: 3}
-  _menuSprite: {fileID: 21300000, guid: 0dc4f5c030acc0a4a91ceadc27719f50, type: 3}
+  _menuSprite: {fileID: 21300000, guid: e624b3223c360ed4bb20ade58beb9658, type: 3}
   _modelPrefab: {fileID: 3005735020196780283, guid: bb6b47e9be78c55408156e4e351cd7fa, type: 3}
   _discoverability: 100
   _price: 10
   type: 1
   _slot_sprite: {fileID: 21300000, guid: eac0110a39a131c4db5deb4428297679, type: 3}
   _slot_empty_sprite: {fileID: 21300000, guid: 6f0ce84c2089a9245933930c027b4050, type: 3}
+  _slot_inventory_sprite: {fileID: 21300000, guid: e624b3223c360ed4bb20ade58beb9658, type: 3}
   _usablePrefab: {fileID: 0}
   _projectilePrefab: {fileID: 3005735020196780283, guid: fdeb95195f683c341a8ce8a922891af9, type: 3}
   _drawSound: {fileID: 8300000, guid: 9c0a6e5df80623d4da90adad63e8da50, type: 3}

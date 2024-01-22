@@ -7,6 +7,6 @@ public class LoadCombatEventButton : MonoBehaviour
 
     private void OnEnable() {
         button = this.GetComponent<UnityEngine.UI.Button>();
-        button.onClick.AddListener(() => Loader.Load(Loader.Scene.MainScene));
+        button.onClick.AddListener(() => Loader.Load(Scene.MainScene));
     }
 }

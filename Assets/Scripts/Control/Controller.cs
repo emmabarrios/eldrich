@@ -186,35 +186,35 @@ public class Controller : MonoBehaviour {
 
             switch (e.swipeDirection) {
 
-                case GestureInput.SwipeDir.Left:
+                case SwipeDir.Left:
                     attacker.Attack("Swing_Left");
                     OnAttack?.Invoke("Swing_Left");
                     break;
-                case GestureInput.SwipeDir.Up:
+                case SwipeDir.Up:
                     attacker.Attack("Swing_Stab");
                     OnAttack?.Invoke("Swing_Stab");
                     break;
-                case GestureInput.SwipeDir.Down:
+                case SwipeDir.Down:
                     attacker.Attack("Swing_Down");
                     OnAttack?.Invoke("Swing_Down");
                     break;
-                case GestureInput.SwipeDir.Right:
+                case SwipeDir.Right:
                     attacker.Attack("Swing_Right");
                     OnAttack?.Invoke("Swing_Right");
                     break;
-                case GestureInput.SwipeDir.UpRight:
+                case SwipeDir.UpRight:
                     attacker.Attack("Swing_Right");
                     OnAttack?.Invoke("Swing_Right");
                     break;
-                case GestureInput.SwipeDir.UpLeft:
+                case SwipeDir.UpLeft:
                     attacker.Attack("Swing_Stab");
                     OnAttack?.Invoke("Swing_Stab");
                     break;
-                case GestureInput.SwipeDir.DownRight:
+                case SwipeDir.DownRight:
                     attacker.Attack("Swing_Down");
                     OnAttack?.Invoke("Swing_Down");
                     break;
-                case GestureInput.SwipeDir.DownLeft:
+                case SwipeDir.DownLeft:
                     attacker.Attack("Swing_Left");
                     OnAttack?.Invoke("Swing_Left");
                     break;

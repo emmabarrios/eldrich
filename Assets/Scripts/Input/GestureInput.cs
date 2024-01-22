@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class GestureInput : MonoBehaviour
 {
-    public enum SwipeDir { None, Left, Up, Down, Right, UpLeft, UpRight, DownLeft, DownRight };
-
     public float minSwipeLength = 5f;
     Vector2 firstPressPos;
     Vector2 secondPressPos;

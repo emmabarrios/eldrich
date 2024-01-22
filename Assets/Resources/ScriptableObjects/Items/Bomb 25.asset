@@ -15,13 +15,14 @@ MonoBehaviour:
   _name: Bomb 25
   _description: Normal bomb
   _sprite: {fileID: 21300000, guid: ccbe7b5edd321c14bbf749a14394e0dd, type: 3}
-  _menuSprite: {fileID: 21300000, guid: 86dc5a25c587090449f37f8f6c0e393c, type: 3}
+  _menuSprite: {fileID: 21300000, guid: c2186b2eabeb59642ac25700b737c8d7, type: 3}
   _modelPrefab: {fileID: 9032594408815822546, guid: 2524bfa5b71fd4d4791574bd2efa5b76, type: 3}
   _discoverability: 100
   _price: 10
   type: 1
   _slot_sprite: {fileID: 21300000, guid: f662fa9ff19f51f41aebe7484be81a5e, type: 3}
   _slot_empty_sprite: {fileID: 21300000, guid: ba093d1d45844f640a2b2b31270f3703, type: 3}
+  _slot_inventory_sprite: {fileID: 21300000, guid: c2186b2eabeb59642ac25700b737c8d7, type: 3}
   _usablePrefab: {fileID: 0}
   _projectilePrefab: {fileID: 3238008565815877012, guid: 1885dceee1dff03448968044083d6c4b, type: 3}
   _drawSound: {fileID: 8300000, guid: e4fad098e1a18b34ca6657016988da1c, type: 3}

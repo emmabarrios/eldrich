@@ -71,15 +71,6 @@ public class Enemy : Character, IDamageable {
     [SerializeField] private bool attackInterrupted = false;
 
 
-    public enum EnemyState {
-        Idle,
-        Chase,
-        Attack,
-        Dead,
-        Neutral,
-        Hit,
-    }
-
     [Header("State settings")]
     public EnemyState currentState = EnemyState.Idle;
 

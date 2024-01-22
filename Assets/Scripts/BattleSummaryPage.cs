@@ -10,7 +10,7 @@ public class BattleSummaryPage : MonoBehaviour
 
     private void OnEnable() {
         button = GetComponentInChildren<UnityEngine.UI.Button>();
-        button.onClick.AddListener(() => Loader.Load(Loader.Scene.Overworld));
+        button.onClick.AddListener(() => Loader.Load(Scene.Overworld));
 
         UpdateTextContent();
     }

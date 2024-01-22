@@ -11,6 +11,7 @@ public class QuickItem : Item
     public QuickItemType type;
     public Sprite _slot_sprite;
     public Sprite _slot_empty_sprite;
+    public Sprite _slot_inventory_sprite;
     public GameObject _usablePrefab;
     public GameObject _projectilePrefab;
     public AudioClip _drawSound;

@@ -21,18 +21,6 @@ public class GameManager : MonoBehaviour
     // Event to destroy object based on battle results
     public Action<string> OnCombatEventFinished;
 
-    public enum GameStates {
-        WaitingToStart,
-        LoadingCombatAssets,
-        Combat,
-        CombatIntro,
-        CombatOutro,
-        Wait,
-        Overworld,
-        LoadingWorldAssets
-    }
-
-
     public GameStates state;
     private float waitingToStartTimer = 1f;
 
@@ -41,19 +29,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float combatLimitTimer;
     [SerializeField] private float combatLimitTimerMax = 10f;
     [SerializeField] private float combatOutroTimer = 3f;
-
-    // Framerate limits
-    public enum Limits {
-        noLimit = 0,
-        limit12 = 12,
-        limit25 = 25,
-        limit30 = 30,
-        limit35 = 35,
-        limit40 = 50,
-        limit45 = 45,
-        limit50 = 50,
-        limit60 = 60
-    }
 
     [Header("Framerate settings")]
     public Limits limits;
@@ -296,7 +271,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode) {
         string sceneName = scene.name;
 
         switch (sceneName) {

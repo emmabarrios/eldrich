@@ -4,13 +4,7 @@ using System;
 public static class Loader
 {
     public static Action onLoaderCallback;
-    public enum Scene {
-        MainScene,
-        LoadingScene,
-        Overworld,
-        TitleScene
-    }
-   public static void Load(Scene scene) {
+       public static void Load(Scene scene) {
         // Set the loader callback action to load the target scene
         onLoaderCallback = () => {
             SceneManager.LoadScene(scene.ToString());
