@@ -23,9 +23,6 @@ public class Attacker : MonoBehaviour
 
 
 
-    // Update values from weapon
-    // Update controller from Attacker values
-
     public void UpdateComboTimerLimit(float weaponCooldown) {
         comboTimeLimit += weaponCooldown;
     }
@@ -34,10 +31,8 @@ public class Attacker : MonoBehaviour
         this.damage = damage;
     }
 
-    // Events
     public Action<string> OnAttackLanded;
 
-    // Define the combo sequences
     private Dictionary<string, List<string>> comboDict = new Dictionary<string, List<string>>
     {
         { "RAGE", new List<string> { "Swing_Left", "Swing_Left", "Swing_Right", "Swing_Down" } },
@@ -45,17 +40,14 @@ public class Attacker : MonoBehaviour
         { "FAST BLADE", new List<string> { "Swing_Left", "Swing_Right" } }
     };
 
-    // Store the current input sequence
     private List<string> currentInput = new List<string>();
 
-    // Store last combo
     private string lastCombo;
 
     private void Start() {
         characterSoundFXManager = transform.root.GetComponentInChildren<CharacterSoundFXManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (currentComboTime > 0f) {
@@ -66,17 +58,14 @@ public class Attacker : MonoBehaviour
     }
 
     private string EvaluateCombo(string attackDirection) {
-        // Check if the time limit has expired
         if (currentComboTime <= 0f) {
             currentInput.Clear();
         }
 
         currentComboTime = comboTimeLimit;
 
-        // Add the current input to the list
         currentInput.Add(attackDirection);
 
-        // Check if the current input matches any combo
         foreach (var combo in comboDict) {
             if (MatchCombo(currentInput, combo.Value)) {
                 currentInput.Clear();
@@ -143,7 +132,6 @@ public class Attacker : MonoBehaviour
 
                 // Fire event
                 OnAttackLanded?.Invoke($"{lastCombo} {damage * current_bonus}");
-                //hitInfo.collider.GetComponent<CharacterVisualFXManager>().PlayDamageEffect(hitInfo.point);
                 hitInfo.collider.GetComponent<CharacterSoundFXManager>().PlayDamageSoundFX();
             }
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class QuickItemsCardGroup : MonoBehaviour
@@ -76,15 +77,8 @@ public class QuickItemsCardGroup : MonoBehaviour
     }
 
     private void OnEnable() {
-        //StartCoroutine(HighLightEquipedQuickItemCoroutine());
 
         UpdateCardGroupContent(GeneralInventory.instance);
-
-        // Update content just once
-        //if (wasEnabled == false) {
-        //    UpdateCardGroupContent(GeneralInventory.instance);
-        //}
-        //wasEnabled = true;
     }
 
 
@@ -97,7 +91,7 @@ public class QuickItemsCardGroup : MonoBehaviour
             foreach (ItemCardUI itemCardUi in GameObject.Find("Quick Item Slots Container").GetComponentsInChildren<ItemCardUI>()) {
                 if (itemCardUi.IsCardClicked()) {
                     wasElementFound = true;
-                    tempItem = itemCardUi.item;
+                    tempItem = itemCardUi.GetItem();
                 }
             }
             yield return null;

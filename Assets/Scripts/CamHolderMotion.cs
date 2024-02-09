@@ -7,7 +7,6 @@ public class CamHolderMotion : MonoBehaviour
     private Quaternion originalRotation;
     private Transform cameraTransform;
     [SerializeField] private Player player = null;
-    //[SerializeField] private PlayerAnimator playerAnimator = null;
     Controller controller = null;
 
     [SerializeField] private GameObject enemy;
@@ -29,19 +28,11 @@ public class CamHolderMotion : MonoBehaviour
 
     void Start()
     {
-        //player = GameObject.Find("Player").GetComponent<Player>();
-        //controller = player.GetComponent<Controller>();
         animator = GetComponent<Animator>();
         
         cameraTransform = GetComponent<Transform>();
         originalRotation = cameraTransform.localRotation;
 
-        // Player Controller Event Subscribers
-        //player.OnDamageTaken += StartCameraShake;
-        //controller.OnDash += StartCameraBob;
-        //controller.OnAttack += LookDirection;
-        //playerAnimator.OnSwingLeft += PlayRotateLeftAnimation;
-        //playerAnimator.OnSwingRight += PlayRotateRightAnimation;
         originalPosition = transform.localPosition;
 
         StartCoroutine(LoadScenePlayerEvents());
@@ -81,14 +72,6 @@ public class CamHolderMotion : MonoBehaviour
         StartCoroutine(BobCamera(direction));
     }
 
-    private void PlayRotateLeftAnimation() {
-        animator.Play("rotate_left");
-    }
-    
-    private void PlayRotateRightAnimation() {
-        animator.Play("rotate_right");
-    }
-
     public void StartCameraShake() {
         if (isrotating == false) {
             StartCoroutine(ShakeCamera( magnitude, direction));
@@ -97,12 +80,10 @@ public class CamHolderMotion : MonoBehaviour
 
     private IEnumerator ShakeCamera(float magnitude, int direction) {
 
-        // Take away controll from the animator controller
         GetComponent<Animator>().enabled = false;
 
         Quaternion rotation = originalRotation * Quaternion.Euler(0f, 0f, magnitude * direction);
 
-        //Reset the camera's rotation to the original rotation
         cameraTransform.localRotation = originalRotation;
 
         rotation = originalRotation * Quaternion.Euler(0f, 0f, magnitude * direction);
@@ -110,7 +91,6 @@ public class CamHolderMotion : MonoBehaviour
         cameraTransform.localRotation = rotation;
 
         while (cameraTransform.localRotation != originalRotation) {
-            // Apply the rotation towards the original rotation
             cameraTransform.localRotation = Quaternion.Lerp(cameraTransform.localRotation, originalRotation, Time.fixedDeltaTime * rotationSpeed);
 
             if (Mathf.Abs(cameraTransform.localRotation.z - originalRotation.z) < 0.01) {
@@ -118,7 +98,6 @@ public class CamHolderMotion : MonoBehaviour
             }
             yield return null;
         }
-        // Return controll from the animator controller
         GetComponent<Animator>().enabled = true;
     }
     
@@ -162,10 +141,6 @@ public class CamHolderMotion : MonoBehaviour
         player.OnDamageTaken += StartCameraShake;
         controller.OnDash += StartCameraBob;
         controller.OnAttack += LookDirection;
-    }
-
-    public void LoadInputReferences() {
-        StartCoroutine(LoadScenePlayerEvents());
     }
 
 }

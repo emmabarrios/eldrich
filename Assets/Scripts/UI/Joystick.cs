@@ -21,8 +21,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     [SerializeField] private float handleRange = 1;
     [SerializeField] private float deadZone = 0;
-    //[SerializeField] private bool snapX = false;
-    //[SerializeField] private bool snapY = false;
     [SerializeField] float lastTimeTap;
     [SerializeField] float tapThreshold = 0.75f;
     [SerializeField] private RectTransform background = null;
@@ -84,22 +82,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
-
-        //background.gameObject.SetActive(true);
-        //StartCoroutine(FadeTo(0, fadeTime));
-
-        //OnDrag(eventData);
-
-        //if (OnArea(eventData)) {
-        //    background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
-
-        //    background.gameObject.SetActive(true);
-        //    StartCoroutine(FadeTo(0, fadeTime));
-
-        //    OnDrag(eventData);
-        //}
-
         background.anchoredPosition = ScreenPointToAnchoredPosition(eventData.position);
 
         background.gameObject.SetActive(true);
@@ -184,29 +166,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         }
         return Vector2.zero;
     }
-    
-    private bool OnArea(PointerEventData eventData) {
-
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(image.rectTransform, eventData.position, eventData.pressEventCamera, out Vector2 localPoint)) {
-            // Convert local point to texture coordinates
-            Vector2 uv = new Vector2((localPoint.x + image.rectTransform.pivot.x * image.rectTransform.rect.width) / image.rectTransform.rect.width,
-                                     (localPoint.y + image.rectTransform.pivot.y * image.rectTransform.rect.height) / image.rectTransform.rect.height);
-
-            // Convert texture coordinates to pixel coordinates
-            int x = Mathf.FloorToInt(uv.x * texture.width);
-            int y = Mathf.FloorToInt(uv.y * texture.height);
-
-            // Get the pixel color at the given coordinates
-            Color pixelColor = texture.GetPixel(x, y);
-
-            // Check if the pixel color has alpha greater than 0, indicating that it's part of the visible sprite
-            if (pixelColor.a > 0) {
-
-                return true;
-            }
-        }
-        return false;
-    }
 
     IEnumerator FadeTo(float aValue, float aTime) {
 
@@ -224,25 +183,11 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
             yield return null;
         }
 
-        // Ensure to completely fade to transparent
         if (image.color.a < 0.1f) {
             Color newColor = image.color;
             newColor.a = 0f;
             image.color = newColor;
         }
 
-    }
-
-    public void PointCursorUp() {
-        // Same as OnPointerUp but don't know how to call it without arguments
-        background.gameObject.SetActive(false);
-        input = Vector2.zero;
-        handle.anchoredPosition = Vector2.zero;
-        OnHandleDroped?.Invoke(this, EventArgs.Empty);
-        StartCoroutine(FadeTo(.2f, fadeTime));
-    }
-
-    public void LockCursor() {
-        isLocked = !isLocked;
     }
 }

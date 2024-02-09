@@ -43,7 +43,6 @@ public class GeneralInventory : MonoBehaviour
         return storedWeaponItemList;
     }
 
-    // AÑADIR ITEMS DEL COMBAT INVENTORY A AMBOS METODOS
     public List<string> GetQuickItemsAsStrings() {
         List<string> quickItemStrings = storedQuickItemList.Select(q => q.ToString()).ToList();
         if (quickItemStrings != null) {
@@ -59,8 +58,6 @@ public class GeneralInventory : MonoBehaviour
         }
         return null;
     }
-
-
 
 
     public void RemoveItem(Item item) {
@@ -99,12 +96,6 @@ public class GeneralInventory : MonoBehaviour
         }
 
         SortItemList(storedQuickItemList);
-
-        //BubbleSortByName(storedQuickItemList);
-        // Convert List<QuickItem> to List<Item>
-        //List<Item> quickItemList = storedQuickItemList.ConvertAll(item => (Item)item);
-        //BubbleSortByName(quickItemList);
-        //storedQuickItemList = quickItemList.ConvertAll(item => (QuickItem)item);
     }
 
     public void AddItem(Item item) {
@@ -116,8 +107,6 @@ public class GeneralInventory : MonoBehaviour
             storedWeaponItemList.Add((WeaponItem)item);
             SortItemList(storedWeaponItemList);
         }
-
-        //storedQuickItemList.Add(quickItem);
     }
 
     private void BubbleSortByName(List<Item> items) {
@@ -138,8 +127,6 @@ public class GeneralInventory : MonoBehaviour
                 }
             }
 
-            // After each pass, the largest element will be at the end,
-            // so we can reduce the range of elements to consider
             n--;
         } while (swapped);
     }
@@ -161,9 +148,6 @@ public class GeneralInventory : MonoBehaviour
                     swapped = true;
                 }
             }
-
-            // After each pass, the largest element will be at the end,
-            // so we can reduce the range of elements to consider
             n--;
         } while (swapped);
     }

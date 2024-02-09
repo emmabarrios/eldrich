@@ -9,7 +9,7 @@ public class TraveledDistanceTracker : MonoBehaviour
 {
     public static TraveledDistanceTracker instance;
     [SerializeField]
-    private DeviceLocationProviderAndroidNative locationProvider;
+    private DeviceLocationProvider locationProvider;
 
     [SerializeField]
     private double currentTraveledDistance;
@@ -39,22 +39,25 @@ public class TraveledDistanceTracker : MonoBehaviour
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode) {
         if (scene.name == "Overworld") {
-            locationProvider = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>();
-            locationProvider.OnDistanceChange += UpdateCurrentTrveledDistance;
 
-            distanceUI = GameObject.Find("Traveled Distance UI").GetComponent<TextMeshProUGUI>();
+            //locationProvider = GameObject.Find("DefaultDeviceLocationProvider").GetComponent<DeviceLocationProvider>();
+
+            //locationProvider = GameObject.Find("AndroidDeviceLocationProvider").GetComponent<DeviceLocationProviderAndroidNative>();
+            //locationProvider.OnDistanceChange += UpdateCurrentTrveledDistance;
+
+            //distanceUI = GameObject.Find("Traveled Distance UI").GetComponent<TextMeshProUGUI>();
         }
     }
 
     private void UpdateCurrentTrveledDistance(double distance) {
-        currentTraveledDistance += distance;
+        //currentTraveledDistance += distance;
 
-        if ((Mathf.FloorToInt((float)currentTraveledDistance) % meterExpLimit == 0) && currentTraveledDistance > 1f) {
-            distanceExpPoints += expPerMeterLimit;
-            PlayerStatsManager.instance.UpdateExperience(distanceExpPoints);
-            distanceExpPoints = 0;
-        }
+        //if ((Mathf.FloorToInt((float)currentTraveledDistance) % meterExpLimit == 0) && currentTraveledDistance > 1f) {
+        //    distanceExpPoints += expPerMeterLimit;
+        //    PlayerStatsManager.instance.UpdateExperience(distanceExpPoints);
+        //    distanceExpPoints = 0;
+        //}
 
-        distanceUI.text = $"Distance: {currentTraveledDistance:F2} meters";
+        //distanceUI.text = $"Distance: {currentTraveledDistance:F2} meters";
     }
 }

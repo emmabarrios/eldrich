@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ScriptableObjectManager : MonoBehaviour {
-    public static ScriptableObjectManager instance; // Singleton instance
+    public static ScriptableObjectManager instance; 
 
-    // Dictionary to store Scriptable Objects based on name
     private Dictionary<string, Item> scriptableObjectsDictionary = new Dictionary<string, Item>();
 
     public Item[] scriptableObjects;
@@ -14,7 +13,6 @@ public class ScriptableObjectManager : MonoBehaviour {
             instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Populate the dictionary with your Scriptable Objects
             InitializeDictionary();
         } else {
             Destroy(gameObject);
@@ -25,12 +23,10 @@ public class ScriptableObjectManager : MonoBehaviour {
         scriptableObjects = Resources.LoadAll<Item>("ScriptableObjects/Items");
 
         foreach (Item so in scriptableObjects) {
-            // Add each Scriptable Object to the dictionary using its name
             scriptableObjectsDictionary.Add(so.name, so);
         }
     }
 
-    // Retrieve a Scriptable Object by name
     public Item GetScriptableObject(string name) {
         if (name!="" && name != null) {
             if (scriptableObjectsDictionary.TryGetValue(name, out Item so)) {

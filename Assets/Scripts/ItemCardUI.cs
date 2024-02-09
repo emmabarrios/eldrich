@@ -11,11 +11,11 @@ public class ItemCardUI : MonoBehaviour
     public int RowNumber { get { return rowNumber; } }
     public int ColNumber { get { return colNumber; } }
 
-    public UnityEngine.UI.Button button;
-    public UnityEngine.UI.Button removeButton;
-    public Item item;
-    public GameObject iconGameObject;
-    public Sprite emptySlotSprite;
+    private UnityEngine.UI.Button button;
+    private UnityEngine.UI.Button removeButton;
+    private Item item;
+    private GameObject iconGameObject;
+    private Sprite emptySlotSprite;
 
 
 
@@ -40,10 +40,6 @@ public class ItemCardUI : MonoBehaviour
 
     public bool IsCardClicked() {
         return this.cardCurrentState == CardState.Clicked;
-    }
-
-    private void ToggleIconGameObject() {
-        iconGameObject.SetActive(!iconGameObject.activeSelf);
     }
 
     public void UpdateItemOnSlot(Item item) {

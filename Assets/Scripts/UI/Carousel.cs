@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -28,7 +27,6 @@ public class Carousel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
     private void Start() {
         rectTransform = this.GetComponent<RectTransform>();
-        //pouchCount = this.transform.childCount - 1;
     }
 
     private void ModifyImageAlpha(Image image, float alpha) {
@@ -79,55 +77,6 @@ public class Carousel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         }
         isSwipeInProgress = false;
     }
-
-    //private void Slide(float swipeDirection) {
-
-    //    if ((carouselPosition == 0 && swipeDirection > 0)) {
-    //        return;
-    //    }
-
-    //    if ((carouselPosition == pouchCount && swipeDirection < 0)) {
-    //        return;
-    //    }
-
-    //    Vector2 offset = new Vector2(Mathf.Floor(pouchSize * swipeDirection), 0f);
-    //    Vector2 currentPos = rectTransform.position;
-
-    //    rectTransform.position = currentPos + offset;
-    //    carouselPosition -= (int)swipeDirection;
-
-    //    if (carouselPosition == 0 && leftHint.GetComponent<Image>().color.a != 0) {
-    //        ModifyImageAlpha(leftHint.GetComponent<Image>(), 0f);
-
-    //    } else if (leftHint.GetComponent<Image>().color.a == 0 && carouselPosition != 0) {
-    //        ModifyImageAlpha(leftHint.GetComponent<Image>(), 1f);
-    //    }
-
-    //    if (carouselPosition == pouchCount && rightHint.GetComponent<Image>().color.a != 0) {
-    //        ModifyImageAlpha(rightHint.GetComponent<Image>(), 0f);
-
-    //    } else if (rightHint.GetComponent<Image>().color.a == 0 && carouselPosition != pouchCount) {
-    //        ModifyImageAlpha(rightHint.GetComponent<Image>(), 1f);
-    //    }
-    //}
-
-    //private IEnumerator Slide(float lenght, float interpolationTime) {
-
-    //    targetPosition = fromPosition + new Vector2(0f, lenght);
-    //    Vector2 velocity = Vector2.zero;
-
-    //    float t = 0;
-
-    //    while (Vector2.Distance(transform.position, targetPosition) > 0.01f) {
-    //        t = interpolationTime * Time.deltaTime;
-
-    //        rectTransform.position = Vector2.SmoothDamp(rectTransform.position, targetPosition, ref velocity, t);
-    //        yield return null;
-    //    }
-
-    //    fromPosition = targetPosition;
-    //    isMoving = false;
-    //}
 
     private IEnumerator Slide(float interpolationTime, float swipeDirection) {
 

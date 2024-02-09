@@ -3,13 +3,10 @@ using Firebase.Database;
 using Firebase.Auth;
 using Firebase.Extensions;
 using UnityEngine;
-using Mapbox.Unity.Location;
 using System;
-using TMPro;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using System.Collections;
 using System.Threading;
 using System.Linq;
 
@@ -156,27 +153,6 @@ public class DatabaseManager : MonoBehaviour
         return false;
     }
 
-    // TEST LATER 
-    //public async Task<bool> PerformFirebaseOperation(Task tsk) {
-
-    //    CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-    //    CancellationToken token = cts.Token;
-
-    //    Task _tsk = tsk;
-
-    //    // Use Task.WhenAny to wait for either tsk or a delay
-    //    var completedTask = await Task.WhenAny(tsk, Task.Delay(Timeout.Infinite, token));
-
-    //    // Check which task completed
-    //    if (completedTask == tsk) {
-    //        if (!tsk.IsFaulted || !tsk.IsCanceled) {
-    //            return true;
-    //        }
-    //    }
-
-    //    return false;
-    //}
-
     public async Task<bool> LoadUserData_() {
         CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
         CancellationToken token = cts.Token;
@@ -237,7 +213,6 @@ public class DatabaseManager : MonoBehaviour
         
 
     public void LoadUserData() {
-        // Load references
         dbReference = FirebaseDatabase.DefaultInstance.RootReference;
 
         userId = AuthManager.instance.GetFirebaseUserId();
@@ -246,13 +221,11 @@ public class DatabaseManager : MonoBehaviour
             
             dbReference.Child("users").Child(userId).GetValueAsync().ContinueWith(task => {
                 if (task.IsFaulted) {
-                    // Handle the error
                     Debug.LogError("Failed to load user data: " + task.Exception);
                     return;
                 }
 
                 if (task.IsCompleted) {
-                    // Parse the JSON data into a User object
                     DataSnapshot snapshot = task.Result;
                     if (snapshot.Exists) {
                         string json = snapshot.GetRawJsonValue();
@@ -261,8 +234,6 @@ public class DatabaseManager : MonoBehaviour
                         temUser = JsonUtility.FromJson<User>(json);
 
                         this.loadedUser = temUser;
-
-                        // Check if more than two days has passed to nerf the players stats
 
                         if (!IsCurrentDay(loadedUser.lastLoggedDay)) {
                             DateTime lastLoggedDate = DateTime.ParseExact(loadedUser.lastLoggedDay, "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -298,7 +269,6 @@ public class DatabaseManager : MonoBehaviour
 
         foreach (var weaponItem in loadedUser.weaponItems) {
             if (weaponItem != null && weaponItem != "") {
-                //Debug.LogWarning("Weapon Item: " + weaponItem);
                 GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(weaponItem));
             }
 
@@ -306,7 +276,6 @@ public class DatabaseManager : MonoBehaviour
 
         foreach (var quickItem in loadedUser.quickItems) {
             if (quickItem != null && quickItem != "") {
-                //Debug.LogWarning("Quick Item: " + quickItem);
                 GeneralInventory.instance.AddItem(ScriptableObjectManager.instance.GetScriptableObject(quickItem));
             }
         }

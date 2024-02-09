@@ -12,7 +12,6 @@ public class ExplosionRadius : MonoBehaviour
 
         if (bodyPart != null) {
             IDamageable damageable = bodyPart.GetComponentInParent<IDamageable>();
-            //Transform collisionTransformRoot = bodyPart.GetComponentInParent<Transform>().root;
             if (damageable != null) {
                 if (other.gameObject.name != "Player") {
                     Vector3 contactPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);

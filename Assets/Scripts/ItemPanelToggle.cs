@@ -7,7 +7,6 @@ public class ItemPanelToggle : MonoBehaviour
 {
     public static ItemPanelToggle instance;
 
-    //[SerializeField] private GameObject QuickItemPanel = null;
     private Toggle toggle;
 
     public Action<bool> OnToggleValueChanged;
@@ -45,7 +44,6 @@ public class ItemPanelToggle : MonoBehaviour
         OnToggleValueChanged?.Invoke(change.isOn);
         PlayRandomSoundFX();
     }
-
 
     public virtual void PlayRandomSoundFX() {
 

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -64,35 +63,5 @@ public class Bomb : Projectile
             }
         }
     }
-
-    //private void OnTriggerEnter(Collider other) {
-    //    BodyPart bodyPart = other.gameObject.GetComponent<BodyPart>();
-    //    if (bodyPart!=null) {
-    //        if(!inRangeColliders.Contains(other)) {
-    //            inRangeColliders.Add(other);
-    //        }
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other) {
-    //    if (inRangeColliders.Contains(other)) {
-    //        inRangeColliders.Remove(other);
-    //    }
-    //}
-
-    //private void DealDamageOnRadius() {
-    //    foreach (Collider collider in inRangeColliders) {
-    //        BodyPart bodyPart = collider.gameObject.GetComponent<BodyPart>();
-
-    //        if (bodyPart != null) {
-
-    //            IDamageable damageable = bodyPart.GetComponentInParent<IDamageable>();
-
-    //            if (damageable != null) {
-    //                damageable.TakeDamage(explosionDamage);
-    //            }
-    //        }
-    //    }
-    //}
 
 }

@@ -8,7 +8,6 @@ public class CombatUIrow : MonoBehaviour
     public PouchItem pouchItemPrefab;
     public int currentRow = 0;
 
-    //public Sprite nullSprite;
 
     public void LoadSlotItems(List<QuickItem> itemList, int row) {
 

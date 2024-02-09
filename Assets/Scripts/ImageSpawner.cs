@@ -10,9 +10,6 @@ public class ImageSpawner : MonoBehaviour
 
     private void Awake() {
         StartCoroutine(WaitForPlayerAndSetupEvents());
-        //Player player = GameObject.Find("Player").GetComponent<Player>();
-        //attacker = player.transform.GetComponentInChildren<Attacker>();
-        //attacker.OnAttackLanded += SpawnImage;
     }
 
     private void SpawnImage(string text) {
@@ -23,7 +20,6 @@ public class ImageSpawner : MonoBehaviour
     }
 
     private IEnumerator WaitForPlayerAndSetupEvents() {
-        // Wait until the "Player" object is loaded into the scene
         GameObject playerObject = null;
 
         while (playerObject == null) {
@@ -31,7 +27,6 @@ public class ImageSpawner : MonoBehaviour
             yield return null;
         }
 
-        // Once the "Player" object is found, set up the events
         Player player = playerObject.GetComponent<Player>();
         attacker = player.transform.GetComponentInChildren<Attacker>();
         attacker.OnAttackLanded += SpawnImage;

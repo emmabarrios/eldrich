@@ -24,32 +24,14 @@ public class CharacterSoundFXManager : MonoBehaviour
     public AudioClip sideStepSound;
 
 
-    private List<AudioClip> potentialDamageSounds;
-    private AudioClip lastDamageSoundPlayed;
-
-
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayDamageSoundFX() {
         audioSource.PlayOneShot(takeDamageSound, .4f);
-
-        //potentialDamageSounds = new List<AudioClip>();
-        //foreach (var damageSound in takeDamageSounds) {
-        //    if (damageSound!=lastDamageSoundPlayed) {
-        //        potentialDamageSounds.Add(damageSound);
-        //    }
-        //}
-        //int randomValue = Random.Range(0, potentialDamageSounds.Count);
-        //lastDamageSoundPlayed = takeDamageSounds[randomValue];
-        //audioSource.PlayOneShot(takeDamageSounds[randomValue], .4f);
     }   
     
-    public void PlayBlockSoundFX() {
-        audioSource.PlayOneShot(blockHitSound, .4f);
-    }
-
     public void PlayRandomFootstepSoundFX() {
 
         potentialfootstepsSounds = new List<AudioClip>();

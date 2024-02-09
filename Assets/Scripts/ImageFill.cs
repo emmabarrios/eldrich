@@ -17,23 +17,9 @@ public class ImageFill : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoadScenePlayerEvents());
-
-        //controller.OnAttackCooldown += UpdateFill;
-        //controller.OnAttack += ResetFill;
-        //ResetFill(1f);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-        //if (coolingDown == true) {
-        //    imageToFill.fillAmount += 1.0f / waitTime * Time.deltaTime;
-        //    if (imageToFill.fillAmount >= 1f) {
-        //        coolingDown = false;
-        //    }
-        //}
-    }
 
     private void UpdateFill(float cooldown) {
         imageToFill.fillAmount = cooldown;

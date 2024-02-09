@@ -97,14 +97,15 @@ public class GameManager : MonoBehaviour
 
                 if (combatLimitTimer < 0) {
                     EndCombatSequence(false);
-                    state = GameStates.Wait;
+                    //state = GameStates.Wait;
                 }
                 break;
 
-            case GameStates.Wait:
+            default:
                 break;
 
         }
+
     }
 
     //private void OnApplicationPause(bool pauseStatus) {
@@ -130,6 +131,8 @@ public class GameManager : MonoBehaviour
             GeneralInventory.instance.StoreItems(GetLoot());
             PlayerStatsManager.instance.EarnedExperience += GetCombatExperience();
         }
+        state = GameStates.Wait;
+        DatabaseManager.instance.SaveGame();
     }
 
     void Start()
@@ -141,14 +144,15 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = (int)limits;
 
         // Block screen with loading panel
-        //LoadingPanel.instance.ShowLoadingScreen();
+        LoadingPanel.instance.ShowLoadingScreen();
 
+        // TEST FOR INFINITE LOOP BUG
         LoadUserData();
 
         LoadingPanel.instance.ShowLoadingScreen();
         StartCoroutine(WaitForMapTilesCoroutine());
 
-        //StartCoroutine(WaitForMapTilesCoroutine());
+        StartCoroutine(WaitForMapTilesCoroutine());
         // If everything was loaded, here the panel will hide
 
         SwitchBackgroundTrack(overworldAudio);
@@ -216,24 +220,19 @@ public class GameManager : MonoBehaviour
         return  (combatLimitTimer / combatLimitTimerMax);
     }
 
-    public void SetToOutroState() {
-        ToggleCombatUI();
-        state = GameStates.CombatOutro;
-    }
+    //private IEnumerator LoadCharacter(GameObject obj, Transform tsfm) {
+    //    GameObject loadedCharacter = Instantiate(obj, tsfm.position, tsfm.rotation);
 
-    private IEnumerator LoadCharacter(GameObject obj, Transform tsfm) {
-        GameObject loadedCharacter = Instantiate(obj, tsfm.position, tsfm.rotation);
+    //    yield return new WaitUntil(ObjectComponentIsNotNull);
 
-        yield return new WaitUntil(ObjectComponentIsNotNull);
+    //    bool ObjectComponentIsNotNull() {
+    //        return loadedCharacter.GetComponent<Character>() != null;
+    //    }
+    //}
 
-        bool ObjectComponentIsNotNull() {
-            return loadedCharacter.GetComponent<Character>() != null;
-        }
-    }
-
-    public void SetGameManagerState(GameStates state) {
-        this.state = state;
-    }
+    //public void SetGameManagerState(GameStates state) {
+    //    this.state = state;
+    //}
 
     public void LoadEventProperties(WorldEvent clickedEvent, GameObject eventMarker) {
         this.clickedEvent = clickedEvent;
@@ -277,13 +276,13 @@ public class GameManager : MonoBehaviour
         switch (sceneName) {
             case("Overworld"):
                 LoadingPanel.instance.ShowLoadingScreen();
-                StartCoroutine(WaitForMapTilesCoroutine());
 
-                UpdateAllAudioSources();
+                StartCoroutine(WaitForMapTilesCoroutine());
 
                 SwitchBackgroundTrack(overworldAudio);
 
-                // Handle prefab spawning
+                UpdateAllAudioSources();
+
                 if (lastClickedEventMarkerLocationId != Vector3.zero) {
                     if (wasEnemyDefeated) {
                         RandomPrefabSpawner.instance.ToggleInstances(lastClickedEventMarkerLocationId);
@@ -292,9 +291,9 @@ public class GameManager : MonoBehaviour
                     }
                 }
 
-                state = GameStates.Overworld;
+                //state = GameStates.Overworld;
 
-                DatabaseManager.instance.SaveGame();
+                //DatabaseManager.instance.SaveGame();
 
                 break;
             case ("MainScene"):

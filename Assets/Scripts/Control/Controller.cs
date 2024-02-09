@@ -15,12 +15,10 @@ public class Controller : MonoBehaviour {
     private float lookRotationSpeed = 4f;
 
     [Header("Movement Settings")]
-    //[SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float maxMovementSpeed = 10f;
     [SerializeField] private float accelerationTime = 2f;
     [SerializeField] private float deaccelerationTime = 2f;
     [SerializeField] private float speedLimitMultiplier = 1f;
-    //[SerializeField] private float turnSpeed = 90f;
     [SerializeField] private bool isWalking;
 
     private float currentSpeed;
@@ -36,7 +34,6 @@ public class Controller : MonoBehaviour {
     [Header("Dash Settings")]
     [SerializeField] private float dashDistance;
     [SerializeField] private float dashMovementSpeed;
-    //[SerializeField] private float dirMultiplier = 1f;
     [SerializeField] private float lookRotationSpeedMultiplier = 4f;
     [SerializeField] private bool dashPerformed = false;
 
@@ -104,13 +101,11 @@ public class Controller : MonoBehaviour {
             hasCombatStarted = true;
         }
 
-        // Movement
         Vector2 inputMovement = joystick.Direction;
         if (!DashPerformed && !IsKnockBacked) {
             Orbitate(inputMovement);
         }
 
-        // Evaluate attack performed
         if (AttackPerformed) {
             attackTimer -= Time.deltaTime;
 
@@ -228,19 +223,7 @@ public class Controller : MonoBehaviour {
         }
     }
 
-
-    private void HandleGyroscopeInput() {
-        // Gyroscope input logic goes here...
-    }
-
     private void Dash(object sender, Joystick.OnDoubleTapEventArgs e) {
-
-        //if (!GameManager.instance.IsGameOnCombat()) {
-        //    if (IsWalking == true) {
-        //        IsWalking = false;
-        //    }
-        //    return;
-        //}
 
         if (!DashPerformed && player.Stamina > 0 && !AttackPerformed) {
             DashPerformed = true;
@@ -274,15 +257,6 @@ public class Controller : MonoBehaviour {
         }
 
         DashPerformed = false;
-    }
-
-    private void ToggleIsUsingItem(bool value) {
-        IsUsingItem = value;
-        if (IsUsingItem) {
-            speedLimitMultiplier = .5f;
-        } else {
-            speedLimitMultiplier = 1f;
-        }
     }
 
 

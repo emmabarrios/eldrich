@@ -42,6 +42,7 @@ public class RandomPrefabSpawner : MonoBehaviour
     }
 
     private void Update() {
+
         string sceneName = SceneManager.GetActiveScene().name;
 
         if (sceneName == "Overworld") {

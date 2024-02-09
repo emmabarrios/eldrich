@@ -86,7 +86,7 @@ public class SessionPanel : MonoBehaviour
         LoadingPanel.instance.ShowLoadingScreen();
 
         // Wait for the login operation to complete
-        yield return AuthManager.instance.Register(emailRegisterField.text, passwordLoginField.text, passwordConfirmField.text, userNameField.text);
+        yield return AuthManager.instance.Register(emailRegisterField.text, passwordRegisterField.text, passwordConfirmField.text, userNameField.text);
 
         LoadingPanel.instance.HideLoadingScreen();
     }
